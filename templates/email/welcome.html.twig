@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chào mừng đến với Gỗ Đất Việt</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 30px;">
+<div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 8px; padding: 30px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+    <h2 style="color: #4CAF50; text-align: center;">Chào mừng Lee Minh Duc!</h2>
+
+    <p>Chúc mừng bạn đã đăng ký tài khoản thành công tại <strong>Gỗ Đất Việt</strong>.</p>
+
+    <p>Bạn đã sẵn sàng khám phá những sản phẩm nội thất gỗ chất lượng và độc đáo của chúng tôi.</p>
+
+    <hr style="margin: 20px 0;">
+
+    <p><strong>Thông tin tài khoản:</strong></p>
+    <ul>
+        <li><strong>Họ tên:</strong> Lee Minh Duc</li>
+        <li><strong>Email:</strong> {{ user.getEmail() }}</li>
+    </ul>
+
+    <p>Nếu bạn không thực hiện hành động này, vui lòng liên hệ với chúng tôi ngay để được hỗ trợ.</p>
+
+    <p style="margin-top: 30px;">Trân trọng,<br>
+        <strong>Đội ngũ Gỗ Đất Việt</strong></p>
+
+    <div style="margin-top: 30px; text-align: center; font-size: 12px; color: #888;">
+        © {{ "now"|date("Y") }} Gỗ Đất Việt. All rights reserved.
+    </div>
+</div>
+</body>
+</html>

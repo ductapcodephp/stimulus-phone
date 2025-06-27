@@ -1,0 +1,33 @@
+
+<div class="container">
+    <h1>Chi Tiết Đơn Hàng </h1>
+    <div class="order-info">
+        <div>
+            <h3>Thông tin khách hàng</h3>
+            <p><strong>Họ tên:</strong> {{ order.name }}</p>
+            <p><strong>Email:</strong> {{order.email}}</p>
+            <p><strong>Địa chỉ:</strong> {{ order.address }}</p>
+            <p><strong>Số điện thoại:</strong>{{ order.phone }}</p>
+            <p><strong>Trạng thái :</strong> {{ order.name }}</p>
+        </div>
+    </div>
+
+    <div class="order-items">
+
+        {% for item in detailOrders %}
+            <div class="order-item">
+                <div class="item-info">
+                    <img src="{{ item.product.getUrlImg }}" alt="{{ item.product.name }}">
+                    <span>{{ item.product.getName }} (x{{ item.quantity }})</span>
+                </div>
+                <div class="item-price">
+                    {{ item.product.getPrice|number_format(0, '.', ',') }} VNĐ
+                </div>
+            </div>
+        {% endfor %}
+        <div class="total">
+            Tổng cộng: {{ total|number_format(0, '.', ',') }} VNĐ
+        </div>
+    </div>
+</div>
+{% endblock %}

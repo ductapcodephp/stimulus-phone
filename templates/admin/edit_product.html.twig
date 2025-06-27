@@ -1,0 +1,78 @@
+{% extends 'admin/admin_layout.hmtl.twig' %}
+
+{% block title %}Sửa sản phẩm - TechPhone{% endblock %}
+
+{% block admin %}
+    <main class="flex-1 p-6 overflow-auto">
+        <div class="container mx-auto bg-white p-6 rounded shadow">
+            <h2 class="text-2xl font-semibold mb-4">Sửa sản phẩm</h2>
+
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 border border-{{ label == 'success' ? 'green' : 'red' }}-400 text-{{ label == 'success' ? 'green' : 'red' }}-700 px-4 py-3 rounded mb-4">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {{ form_start(editProductForm, {
+                'attr': {'class': 'space-y-4'},
+                'enctype': 'multipart/form-data'
+            }) }}
+
+            {{ form_errors(editProductForm) }}
+
+            <div>
+                {{ form_label(editProductForm.name, 'Tên sản phẩm', {'label_attr': {'class': 'block text-gray-700 font-medium'}}) }}
+                {{ form_widget(editProductForm.name, {'attr': {'class': 'w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500'}}) }}
+                {{ form_errors(editProductForm.name) }}
+            </div>
+
+            <div>
+                {{ form_label(editProductForm.price, 'Giá sản phẩm', {'label_attr': {'class': 'block text-gray-700 font-medium'}}) }}
+                {{ form_widget(editProductForm.price, {'attr': {'class': 'w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500'}}) }}
+                {{ form_errors(editProductForm.price) }}
+            </div>
+
+            <div>
+                {{ form_label(editProductForm.description, 'Mô tả sản phẩm', {'label_attr': {'class': 'block text-gray-700 font-medium'}}) }}
+                {{ form_widget(editProductForm.description, {'attr': {'class': 'w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500'}}) }}
+                {{ form_errors(editProductForm.description) }}
+            </div>
+
+            <div>
+                {{ form_label(editProductForm.color, 'Màu sản phẩm', {'label_attr': {'class': 'block text-gray-700 font-medium'}}) }}
+                {{ form_widget(editProductForm.color, {'attr': {'class': 'w-20 h-10 border rounded focus:outline-none cursor-pointer'}}) }}
+                {{ form_errors(editProductForm.color) }}
+            </div>
+
+            <div>
+                {{ form_label(editProductForm.url_img, 'Ảnh sản phẩm', {'label_attr': {'class': 'block text-gray-700 font-medium'}}) }}
+                {{ form_widget(editProductForm.url_img, {'attr': {'class': 'w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500'}}) }}
+                {{ form_errors(editProductForm.url_img) }}
+            </div>
+
+            <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
+                Cập nhật sản phẩm
+            </button>
+            {{ form_end(editProductForm) }}
+
+            <div class="mt-4">
+                <a href="{{ path('app_admin') }}" class="text-blue-500 hover:underline">
+                    &larr; Quay về danh sách sản phẩm
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const colorPicker = document.getElementById('color-picker');
+            if (colorPicker) {
+                colorPicker.addEventListener('input', function () {
+                    colorPicker.style.backgroundColor = this.value;
+                });
+            }
+        });
+    </script>
+{% endblock %}

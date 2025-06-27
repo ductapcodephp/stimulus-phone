@@ -1,0 +1,75 @@
+{% extends 'phone/layout.html.twig' %}
+
+{% block title %}Trang chính{% endblock %}
+
+{% block content %}
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-wrapper">
+                <div class="hero-content">
+                    <h1 class="fade-in">Khám Phá Điện Thoại Tương Lai</h1>
+                    <p class="fade-in">Sở hữu ngay những mẫu smartphone mới nhất với công nghệ tiên tiến và giá ưu đãi!</p>
+                    <div class="hero-buttons fade-in">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="products-section" id="products">
+        <div class="container">
+            <h2 class="section-title">Sản Phẩm Nổi Bật</h2>
+            <div class="products-grid">
+                {% for product in products %}
+                    <div class="product-card fade-in">
+                        <div class="product-image"><img src="{{ product.UrlImg }}" alt="{{ product.name }}"></div>
+                        <div class="product-info">
+                            <h3 class="product-name">{{ product.name }}</h3>
+                            {% if product.priceSale > 0 %}
+                                <div class="product-price">{{ product.price|number_format('0',',','.') }}đ <span class="old-price">{{ product.getPriceSale()|number_format('0',',','.') }}đ</span></div>
+                            {% else %}
+                                <div class="product-price">{{ product.price|number_format('0',',','.') }}đ</div>
+                            {% endif %}
+                            <ul class="product-features">
+                                <li>• Chip A17 Pro mạnh mẽ</li>
+                                <li>• Camera 48MP ProRAW</li>
+                                <li>• Titanium cao cấp</li>
+                                <li>• Bảo hành 12 tháng</li>
+                            </ul>
+                            <a href="{{ path('addToCart', {'id': product.id}) }}" class="buy-button">Thêm vào giỏ</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Tại Sao Chọn Chúng Tôi?</h2>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">✅</div>
+                    <h3 class="feature-title">Chính Hãng 100%</h3>
+                    <p>Tất cả sản phẩm đều chính hãng, có tem bảo hành từ nhà sản xuất</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🚚</div>
+                    <h3 class="feature-title">Giao Hàng Nhanh</h3>
+                    <p>Giao hàng trong 24h tại TP.HCM, 2-3 ngày toàn quốc</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">💰</div>
+                    <h3 class="feature-title">Giá Tốt Nhất</h3>
+                    <p>Cam kết giá tốt nhất thị trường, hoàn tiền nếu tìm được giá rẻ hơn</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🔧</div>
+                    <h3 class="feature-title">Hỗ Trợ 24/7</h3>
+                    <p>Đội ngũ kỹ thuật hỗ trợ khách hàng 24/7, sửa chữa tận nơi</p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

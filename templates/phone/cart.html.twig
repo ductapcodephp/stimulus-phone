@@ -1,0 +1,150 @@
+{% extends 'phone/layout.html.twig' %}
+
+{% block title %}Giỏ Hàng{% endblock %}
+
+{% block content %}
+    <link href="{{ asset('css/cart.css') }}" rel="stylesheet">
+    <section class="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb-list">
+                <li><a href="#" onclick="goHome()">Trang chủ</a></li>
+                <li>›</li>
+                <li>Giỏ hàng</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="cart-section">
+        <div class="container">
+            <div class="cart-header fade-in">
+                <div>
+                    <h1 class="cart-title">Giỏ Hàng Của Bạn</h1>
+                    <p class="cart-count" id="cart-count">0 sản phẩm</p>
+                </div>
+                <button class="clear-cart"  id="clear-btn" style="display: {% if cartItems|length|default(0) > 0 %}block{% else %}none{% endif %}">
+                    🗑️ Xóa tất cả
+                </button>
+            </div>
+
+            {% if cartItems|length|default(0) > 0 %}
+                <div class="cart-content" id="cart-content">
+                    <div class="cart-items fade-in" id="cart-items">
+                        {% for cartItem in cartItems %}
+                            <div class="cart-item">
+                                <div class="cart-item-image">
+                                    <img src="{{ cartItem.product.urlImg|default('https://via.placeholder.com/100') }}" alt="{{ cartItem.product.name|default('Sản phẩm') }}" width="100" height="100">
+                                </div>
+                                <div class="cart-item-details">
+                                    <h3 class="cart-item-title">{{ cartItem.product.name|default('Sản phẩm') }}</h3>
+                                    <div class="cart-item-price">{{ cartItem.product.price|number_format(0, ',', '.')|default('0') }}₫</div>
+                                    <div class="cart-item-quantity">
+                                        <button class="quantity-btn" data-id="{{ cartItem.id }}" data-action="decrease">-</button>
+                                        <span id="qty-{{ cartItem.id }}">{{ cartItem.quantity|default(1) }}</span>
+                                        <button class="quantity-btn" data-id="{{ cartItem.id }}" data-action="increase">+</button>
+                                    </div>
+                                </div>
+                                <button class="cart-item-remove" onclick="location.href='{{ path('remove_cart', {'id': cartItem.id}) }}'">Xóa</button>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="cart-summary fade-in">
+                        <h3 class="summary-title">Tóm Tắt Đơn Hàng</h3>
+                        <div class="summary-row">
+                            <span>Tạm tính:</span>
+                            <span id="subtotal">{{ total|number_format(0, '.', ',')|default('0') }}₫</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Phí vận chuyển:</span>
+                            <span id="shipping">0₫</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Giảm giá:</span>
+                            <span id="discount">-0₫</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Tổng cộng:</span>
+                            <span id="total">{{ (total|default(0) + 30000)|number_format(0, '.', ',') }}₫</span>
+                        </div>
+                        <div class="discount-code">
+                            <label for="discount-input">Mã giảm giá:</label>
+                            <div class="discount-input">
+                                <input type="text" id="discount-input" placeholder="Nhập mã giảm giá">
+                                <button class="apply-discount" onclick="applyDiscount()">Áp dụng</button>
+                            </div>
+                        </div>
+                        <button class="checkout-btn" id="checkout-btn">
+                            <span id="checkout-text"><a href="{{ path('checkout') }}" style="color: inherit; text-decoration: none;">Tiến Hành Thanh Toán</a></span>
+                        </button>
+                        <a href="#" class="continue-shopping" onclick="goHome()">← Tiếp tục mua sắm</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="empty-cart fade-in" id="empty-cart">
+                    <div class="empty-cart-icon">🛒</div>
+                    <h2>Giỏ hàng của bạn đang trống</h2>
+                    <p>Hãy khám phá các sản phẩm tuyệt vời của chúng tôi!</p>
+                    <a href="#" class="checkout-btn" onclick="goHome()" style="max-width: 300px; margin: 0 auto;">
+                        Bắt đầu mua sắm
+                    </a>
+                    <div class="recommended">
+                        <h3 class="recommended-title">Sản phẩm đề xuất</h3>
+                        <div class="recommended-grid">
+                            <div class="recommended-item" onclick="addRecommendedToCart('iPhone 15 Pro Max', 29990000)">
+                                <div style="font-size: 2rem;">📱</div>
+                                <h4>iPhone 15 Pro Max</h4>
+                                <p>29.990.000₫</p>
+                            </div>
+                            <div class="recommended-item" onclick="addRecommendedToCart('Samsung Galaxy S24', 26990000)">
+                                <div style="font-size: 2rem;">📱</div>
+                                <h4>Samsung Galaxy S24</h4>
+                                <p>26.990.000₫</p>
+                            </div>
+                            <div class="recommended-item" onclick="addRecommendedToCart('Xiaomi 14 Ultra', 19990000)">
+                                <div style="font-size: 2rem;">📱</div>
+                                <h4>Xiaomi 14 Ultra</h4>
+                                <p>19.990.000₫</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+
+    <script>
+        document.querySelectorAll('.quantity-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const action = this.getAttribute('data-action');
+                const url = `/cart/${action}/${id}`;
+
+                axios.post(url)
+                    .then(response => {
+                        document.getElementById(`qty-${id}`).innerText = response.data.quantity;
+                        if (response.data.total !== undefined) {
+                            document.getElementById('subtotal').innerText = response.data.total.toLocaleString('vi-VN') + '₫';
+                            document.getElementById('total').innerText = (response.data.total + 30000).toLocaleString('vi-VN') + '₫';
+                            document.getElementById('cart-count').innerText = response.data.countItem + ' sản phẩm';
+                            const cartCount = document.getElementById('cart-item');
+                            if (cartCount) {
+                                cartCount.innerHTML = `🛒 Giỏ Hàng (${response.data.countItem ?? 0})`;
+                            }
+                        }
+
+                        if (response.data.cartCount === 0) {
+                            document.getElementById('cart-content').style.display = 'none';
+                            document.getElementById('empty-cart').style.display = 'block';
+                            document.getElementById('clear-btn').style.display = 'none';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error updating cart:', error);
+                    });
+            });
+        });
+
+
+    </script>
+{% endblock %}

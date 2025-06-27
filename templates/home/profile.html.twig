@@ -1,0 +1,140 @@
+{% extends 'home/layout.html.twig' %}
+
+{% block title %}Hồ sơ cá nhân{% endblock %}
+
+{% block body %}
+    <section class="profile-section">
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <img src="{{ asset('images/default-avatar.png') }}" alt="Avatar người dùng">
+                </div>
+                <div class="profile-info">
+                    <h2>Lee Minh Hoo</h2>
+                    <p>Email: {{ app.user.email }}</p>
+                    <p>Điện thoại: {{ app.user.phone ?? 'Chưa cập nhật' }}</p>
+                    <p>Địa chỉ: {{ app.user.address ?? 'Chưa cập nhật' }}</p>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <a href="" class="btn-edit">Chỉnh sửa hồ sơ</a>
+                <a href="" class="btn-password">Đổi mật khẩu</a>
+            </div>
+
+            <div class="profile-orders">
+                <h3>Đơn hàng gần đây</h3>
+                {% if recentOrders|length > 0 %}
+                    <ul>
+                        {% for order in recentOrders %}
+                            <li>
+                                <strong>Đơn hàng #{{ order.id }} - Số điện thoại {{ order.phone }} - <a href="{{ path('order_detail_user', {'id': order.id}) }}">Xem chi tiết</a>
+
+                                </strong>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Bạn chưa có đơn hàng nào.</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .profile-section {
+            padding: 6rem 2rem;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 1rem;
+            max-width: 600px;
+            width: 100%;
+            padding: 2rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-avatar img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+
+        .profile-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-info p {
+            opacity: 0.8;
+            margin: 0.2rem 0;
+        }
+
+        .profile-actions {
+            margin: 1.5rem 0;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-edit, .btn-password {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+
+        .btn-edit:hover, .btn-password:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .profile-orders {
+            margin-top: 2rem;
+            max-height: 50vh;
+            overflow-y: scroll;
+            overflow-x: hidden;
+
+        }
+
+        .profile-orders h3 {
+            margin-bottom: 1rem;
+        }
+
+        .profile-orders ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .profile-orders li {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+{% endblock %}

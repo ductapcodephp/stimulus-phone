@@ -1,0 +1,343 @@
+{% extends 'home/layout.html.twig' %}
+
+{% block title %}Cart{% endblock %}
+
+{% block body %}
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: #333;
+                overflow-x: hidden;
+            }
+
+            /* Navigation (reused from main page) */
+            nav {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(20px);
+                padding: 1rem 2rem;
+                z-index: 1000;
+                transition: all 0.3s ease;
+            }
+
+            nav:hover {
+                background: rgba(255, 255, 255, 0.15);
+            }
+
+            .nav-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+                font-weight: bold;
+                color: white;
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            }
+
+            .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 2rem;
+            }
+
+            .nav-links a {
+                color: white;
+                text-decoration: none;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                position: relative;
+            }
+
+            .nav-links a:hover {
+                transform: translateY(-2px);
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            }
+
+            .nav-links a::after {
+                content: '';
+                position: absolute;
+                bottom: -5px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+                transition: width 0.3s ease;
+            }
+
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            /* Cart Section */
+            .cart-section {
+                padding: 5rem 2rem;
+                max-width: 1200px;
+                margin: 6rem auto 2rem;
+            }
+
+            .section-title {
+                text-align: center;
+                font-size: 3rem;
+                color: white;
+                margin-bottom: 3rem;
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            }
+
+            .cart-container {
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(20px);
+                border-radius: 20px;
+                padding: 2rem;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .cart-item {
+                display: flex;
+                align-items: center;
+                padding: 1.5rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .cart-item:last-child {
+                border-bottom: none;
+            }
+
+            .cart-item:hover {
+                background: rgba(255, 255, 255, 0.15);
+                transform: translateY(-5px);
+            }
+
+            .cart-item-image {
+                width: 100px;
+                height: 100px;
+                background: linear-gradient(45deg, #667eea, #764ba2);
+                border-radius: 10px;
+                margin-right: 1.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2rem;
+            }
+
+            .cart-item-details {
+                flex: 1;
+                color: white;
+            }
+
+            .cart-item-title {
+                font-size: 1.3rem;
+                font-weight: bold;
+                margin-bottom: 0.5rem;
+            }
+
+            .cart-item-price {
+                font-size: 1.2rem;
+                color: #4ecdc4;
+                margin-bottom: 0.5rem;
+            }
+
+            .cart-item-quantity {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .quantity-btn {
+                background: linear-gradient(45deg, #4ecdc4, #44a08d);
+                color: white;
+                border: none;
+                padding: 0.5rem 1rem;
+                border-radius: 15px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .quantity-btn:hover {
+                transform: scale(1.1);
+                box-shadow: 0 5px 15px rgba(78, 205, 196, 0.4);
+            }
+
+            .cart-item-remove {
+                background: linear-gradient(45deg, #ff6b6b, #e74c3c);
+                color: white;
+                border: none;
+                padding: 0.5rem 1rem;
+                border-radius: 15px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .cart-item-remove:hover {
+                transform: scale(1.1);
+                box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+            }
+
+            .cart-total {
+                text-align: right;
+                padding: 2rem;
+                color: white;
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+
+            .cart-total span {
+                color: #4ecdc4;
+            }
+
+            .checkout-button {
+                display: block;
+                width: 200px;
+                margin: 2rem auto;
+                padding: 1rem;
+                background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+                color: white;
+                text-decoration: none;
+                border-radius: 50px;
+                font-weight: bold;
+                font-size: 1.1rem;
+                text-align: center;
+                transition: all 0.3s ease;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .checkout-button::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+                transition: left 0.5s;
+            }
+
+            .checkout-button:hover::before {
+                left: 100%;
+            }
+
+            .checkout-button:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            }
+
+            /* Footer (reused from main page) */
+            footer {
+                background: rgba(0, 0, 0, 0.3);
+                color: white;
+                text-align: center;
+                padding: 2rem;
+                backdrop-filter: blur(10px);
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .section-title {
+                    font-size: 2rem;
+                }
+
+                .cart-item {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 1rem;
+                }
+
+                .cart-item-image {
+                    margin-right: 0;
+                }
+
+                .cart-total {
+                    text-align: center;
+                }
+            }
+
+            /* Floating Animation (reused from main page) */
+            @keyframes bounce {
+                0%, 20%, 53%, 80%, 100% {
+                    transform: translate3d(0,0,0);
+                }
+                40%, 43% {
+                    transform: translate3d(0,-30px,0);
+                }
+                70% {
+                    transform: translate3d(0,-15px,0);
+                }
+                90% {
+                    transform: translate3d(0,-4px,0);
+                }
+            }
+        </style>
+
+    <section class="cart-section" id="cart">
+        <h2 class="section-title">Giỏ Hàng Của Bạn</h2>
+        <div class="cart-container">
+            {% for cartItem in cartItems %}
+
+                    <div class="cart-item">
+                        <div class="cart-item-image">
+                            <img src="{{ cartItem.product.urlImg }}" alt="{{ cartItem.product.name }}" width="100" height="100">
+                        </div>
+                        <div class="cart-item-details">
+                            <h3 class="cart-item-title">{{ cartItem.product.name }}</h3>
+                            <div class="cart-item-price">{{ cartItem.product.price|number_format(0,',','.') }}₫</div>
+                            <div class="cart-item-quantity">
+                                <button class="quantity-btn" data-id="{{ cartItem.id }}" data-action="decrease">-</button>
+                                <span id="qty-{{ cartItem.id }}">{{ cartItem.quantity }}</span>
+                                <button class="quantity-btn" data-id="{{ cartItem.id }}" data-action="increase">+</button>
+                            </div>
+                        </div>
+                        <button class="cart-item-remove" onclick="location.href='{{ path('remove_cart', {'id': cartItem.id}) }}'">Xóa</button>
+                    </div>
+
+            {% endfor %}
+
+
+
+            <div class="cart-total">
+                Tổng cộng: <span>{{ total | number_format(0, '.', ',') }} VNĐ</span>
+            </div>
+        </div>
+        <a href="{{ path('checkout') }}" class="checkout-button">Thanh Toán</a>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.querySelectorAll('.quantity-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const action = this.getAttribute('data-action');
+                const url = `/cart/${action}/${id}`;
+
+                axios.post(url)
+                    .then(response => {
+                        document.getElementById(`qty-${id}`).innerText = response.data.quantity;
+                        const totalElement = document.querySelector('.cart-total span');
+                        if (totalElement) {
+                            const formattedTotal = new Intl.NumberFormat('vi-VN').format(response.data.totalCart);
+                            totalElement.innerText = `${formattedTotal} VNĐ`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error updating cart:', error);
+                    });
+            });
+        });
+    </script>
+  {% endblock %}

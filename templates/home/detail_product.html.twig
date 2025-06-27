@@ -1,0 +1,150 @@
+{% extends 'home/layout.html.twig' %}
+
+{% block title %}{{ product.name }} - TechPhone{% endblock %}
+
+{% block body %}
+    <section class="product-detail-section">
+        <div class="product-detail-container">
+            <h1 class="product-title">{{ product.name }}</h1>
+            <div class="product-image">
+                <img src="{{ asset(product.urlImg) }}" alt="{{ product.name }}" class="img-fluid">
+            </div>
+            <div class="product-info">
+                <p class="product-price">{{ product.price | number_format(0, ',', '.') }} VNĐ</p>
+                <p class="product-description">{{ product.description }}</p>
+                <p class="product-color">
+                    Màu sắc:
+                    <span class="color-swatch" style="background-color: {{ product.color }};"></span>
+                    {{ product.color }}
+                </p>
+            </div>
+            <a href="{{ path('app_task_index') }}" class="cta-button">Quay lại danh sách sản phẩm</a>
+        </div>
+    </section>
+
+    <section class="comment-section">
+        <div class="comment-container">
+            <h2 style="color: white; margin-top: 3rem;">Bình luận</h2>
+
+            {% if comments is empty %}
+                <p style="color: white;">Chưa có bình luận nào.</p>
+            {% else %}
+                {% for comment in comments %}
+                    <div class="comment-box" style="background: rgba(255,255,255,0.1); padding: 1rem; margin-bottom: 1rem; border-radius: 10px;">
+                        <p><strong>Lee Min Duc</strong> - {{ comment.createdAt|date('d/m/Y H:i') }}</p>
+                        <p>⭐ {{ comment.rate }}/5</p>
+                        <p>{{ comment.text }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if app.user %}
+                <h3 style="color: white;">Viết bình luận</h3>
+                {{ form_start(form) }}
+                {{ form_row(form.text) }}
+                {{ form_row(form.rate) }}
+                <button type="submit" class="cta-button">Gửi bình luận</button>
+                {{ form_end(form) }}
+            {% else %}
+                <p style="color: white;">Vui lòng <a href="{{ path('app_login') }}">đăng nhập</a> để bình luận.</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <style>
+        .product-detail-section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .product-detail-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 800px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .product-title {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .product-info {
+            text-align: left;
+            color: white;
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .product-description {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-color {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(78, 205, 196, 0.4);
+        }
+
+        .comment-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+        }
+
+        .comment-box {
+            color: white;
+        }
+    </style>
+{% endblock %}

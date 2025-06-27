@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+<div class="flex flex-col h-screen">
+    <header class="bg-blue-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Quản lý bán điện thoại</h1>
+            <div>
+                <span class="mr-4">Admin</span>
+                <a href="{{ path('app_logout') }}" class="bg-blue-700 px-3 py-1 rounded hover:bg-blue-800">Đăng xuất</a>
+            </div>
+        </div>
+    </header>
+    <div class="flex flex-1 overflow-hidden">
+        <aside class="bg-gray-800 text-white w-64 p-4">
+            <nav>
+                <ul>
+                    <li class="mb-2">
+                        <a href="" class="block p-2 rounded hover:bg-gray-700">Dashboard</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="{{'/admin'}}" class="block p-2 rounded bg-gray-700">Sản phẩm</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="{{ path('admin_order') }}" class="block p-2 rounded hover:bg-gray-700">Đơn hàng</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="{{ path('admin_user_list') }}" class="block p-2 rounded hover:bg-gray-700">Khách hàng</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="{{ path('admin_revenue') }}" class="block p-2 rounded hover:bg-gray-700">Doanh thu</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="block p-2 rounded hover:bg-gray-700">Cài đặt</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        {% block admin %}
+
+        {% endblock %}
+    </div>
+</div>
+</body>
+</html>

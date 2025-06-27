@@ -1,0 +1,85 @@
+{% extends 'phone/layout.html.twig' %}
+
+{% block title %}Thanh toán{% endblock %}
+
+{% block content %}
+    <link href="{{ asset('css/checkout.css') }}" rel="stylesheet">
+    <section class="checkout-section" id="checkout">
+        <div class="container">
+            <h2 class="section-title fade-in">Thanh Toán</h2>
+
+            {# Hiển thị thông báo flash #}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="flash-{{ label }} fade-in">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+
+            <div class="checkout-content">
+                <div class="checkout-form fade-in">
+                    <h3>Thông Tin Giao Hàng</h3>
+                    {{ form_start(form, {'attr': {'class': 'form'}}) }}
+                    {{ form_errors(form) }}
+                    <div class="form-group">
+                        {{ form_label(form.name, 'Họ và Tên') }}
+                        {{ form_widget(form.name, {'attr': {'class': 'form-input', 'placeholder': 'Nhập họ và tên'}}) }}
+                        {{ form_errors(form.name) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.phone, 'Số Điện Thoại') }}
+                        {{ form_widget(form.phone, {'attr': {'class': 'form-input', 'placeholder': 'Nhập số điện thoại'}}) }}
+                        {{ form_errors(form.phone) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.email, 'Email') }}
+                        {{ form_widget(form.email, {'attr': {'class': 'form-input', 'placeholder': 'Nhập email'}}) }}
+                        {{ form_errors(form.email) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.address, 'Địa Chỉ Giao Hàng') }}
+                        {{ form_widget(form.address, {'attr': {'class': 'form-input', 'placeholder': 'Nhập địa chỉ'}}) }}
+                        {{ form_errors(form.address) }}
+                    </div>
+
+                    <div class="payment-options">
+                        <h3>Phương Thức Thanh Toán</h3>
+                        <div class="payment-option">
+                            <input type="radio" id="cod" name="payment" value="cod" checked>
+                            <label for="cod">Thanh toán khi nhận hàng (COD)</label>
+                        </div>
+                        <div class="payment-option">
+                            <input type="radio" id="bank" name="payment" value="bank">
+                            <label for="bank">Chuyển khoản ngân hàng</label>
+                        </div>
+                        <div class="payment-option">
+                            <input type="radio" id="card" name="payment" value="card">
+                            <label for="card">Thẻ tín dụng/ghi nợ</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-button">Xác Nhận Đơn Hàng</button>
+                    {{ form_end(form) }}
+                    <p class="register-link">
+                        Quay về <a href="{{ path('cart_list') }}">giỏ hàng</a>
+                    </p>
+                </div>
+                <div class="order-summary fade-in">
+                    <h3>Tóm Tắt Đơn Hàng</h3>
+                    {% if cartItems is empty %}
+                        <p>Giỏ hàng của bạn đang trống.</p>
+                    {% else %}
+                        {% for item in cartItems %}
+                            <div class="order-item">
+                                <span class="order-item-name">{{ item.product.name }} x{{ item.quantity }}</span>
+                                <span class="order-item-price">{{ (item.product.price * item.quantity) | number_format(0, ',', '.') }} VNĐ</span>
+                            </div>
+                        {% endfor %}
+                        <div class="order-total">
+                            <span>Tổng Cộng</span>
+                            <span>{{ total | number_format(0, ',', '.') }} VNĐ</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

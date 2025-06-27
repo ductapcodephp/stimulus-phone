@@ -1,0 +1,66 @@
+    {% extends 'admin/admin_layout.hmtl.twig' %}
+    {% block admin %}
+    <main class="flex-1 p-6 overflow-auto">
+        <div class="container mx-auto">
+            <div class="mb-6">
+                <div class="mb-6">
+                    <form method="get" action="{{ path('app_admin') }}" class="flex gap-2">
+                        <input
+                                type="text"
+                                name="search"
+                                value="{{ search }}"
+                                placeholder="Tìm kiếm sản phẩm..."
+                                class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                        <label class="flex items-center">
+                            <input type="checkbox" name="low_stock" value="1" {% if low_stock %}checked{% endif %} class="mr-1">
+                            Sắp hết hàng
+                        </label>
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                            Tìm kiếm
+                        </button>
+                    </form>
+                </div>
+
+
+            </div>
+            <div class="bg-white p-6 rounded shadow">
+                <h2 class="text-xl font-semibold mb-4">Danh sách sản phẩm</h2>
+                <div class="mb-4">
+                    <a href="{{ path('addProduct') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                        + Thêm sản phẩm
+                    </a>
+                </div>
+                <table class="w-full border-collapse">
+                    <thead>
+                    <tr class="bg-gray-200">
+                        <th class="p-2 text-left">ID</th>
+                        <th class="p-2 text-left">Tên</th>
+                        <th class="p-2 text-left">Hình ảnh </th>
+                        <th class="p-2 text-left">Giá (VND)</th>
+                        <th class="p-2 text-left">Tồn kho</th>
+                        <th class="p-2 text-left">Mô tả</th>
+                        <th class="p-2 text-left">Hành động</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in data %}
+                    <tr class="border-b">
+                        <td class="p-2">{{ product.id }}</td>
+                        <td class="p-2">{{ product.name}}</td>
+                        <td class="p-2 w-5 "><img src="{{ product.UrlImg }}"> </td>
+                        <td class="p-2">{{ product.price }}</td>
+                        <td class="p-2">{{ product.inventory }}</td>
+                        <td class="p-2">{{ product.description }}</td>
+                        <td class="p-2">
+                            <a href="{{ path('editProduct',{'id':product.id})}} " class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 mr-2">Sửa</a>
+                            <a href="{{ path('admin_del_product',{'id':product.id}) }}" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Xóa</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    {% endblock %}

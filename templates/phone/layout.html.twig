@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %}</title>
+</head>
+<link href="{{ asset('css/layout.css') }}" rel="stylesheet">
+<body>
+<header>
+    <div class="container">
+        <nav>
+            <div class="logo">📱 PhoneStore</div>
+            <ul class="nav-links">
+                <li><a href="{{ path('app_task_index') }}">Trang Chủ</a></li>
+                <li><a href="{{ path('product') }}">Sản Phẩm</a></li>
+                <li><a href="{{ path('about') }}">Giới Thiệu</a></li>
+                <li><a href="{{ path('contact') }}">Liên Hệ</a></li>
+            </ul>
+            <div class="user-account">
+                {% if app.user %}
+                <div class="user-account-toggle" id="userToggle">Người Dùng</div>
+                <div class="user-account-menu" id="userMenu">
+                    <a href="{{ path('app_profile')}}">Quản Lý Tài Khoản</a>
+                    <a href="#">Đơn Hàng</a>
+                    <a href="{{ path('app_logout') }}">Đăng Xuất</a>
+                </div>
+                {% else %}
+               <div class="user-account-toggle" id="guestToggle">Tài Khoản</div>
+                <div class="user-account-menu" id="guestMenu">
+                    <a href="{{path('app_login')}}">Đăng Nhập</a>
+                    <a href="{{ 'app_register' }}">Đăng Ký</a>
+                </div>
+                {% endif %}
+            </div>
+            <a href="{{ path('cart_list') }}" class="cart-icon" id="cart-item"></a>
+
+        </nav>
+    </div>
+</header>
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ label }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+{% block content %}
+
+{% endblock %}
+
+
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Về PhoneStore</h3>
+                <ul>
+                    <li><a href="#">Giới thiệu</a></li>
+                    <li><a href="#">Tuyển dụng</a></li>
+                    <li><a href="#">Tin tức</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Hỗ Trợ</h3>
+                <ul>
+                    <li><a href="#">Hướng dẫn mua hàng</a></li>
+                    <li><a href="#">Chính sách bảo hành</a></li>
+                    <li><a href="#">Chính sách đổi trả</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Liên Hệ</h3>
+                <ul>
+                    <li>📞 Hotline: 1900 1234</li>
+                    <li>📧 Email: info@phonestore.vn</li>
+                    <li>📍 TP.HCM: 123 Nguyễn Huệ, Q1</li>
+                    <li>📍 Hà Nội: 456 Hoàn Kiếm</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Theo Dõi</h3>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">YouTube</a></li>
+                    <li><a href="#">TikTok</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 PhoneStore. Tất cả quyền được bảo lưu.</p>
+        </div>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const userToggle = document.getElementById('userToggle');
+        const userMenu = document.getElementById('userMenu');
+        const guestToggle = document.getElementById('guestToggle');
+        const guestMenu = document.getElementById('guestMenu');
+
+        if (userToggle && userMenu) {
+            userToggle.addEventListener('click', () => {
+                userMenu.classList.toggle('active');
+            });
+        }
+
+        if (guestToggle && guestMenu) {
+            guestToggle.addEventListener('click', () => {
+                guestMenu.classList.toggle('active');
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            if (userToggle && userMenu && !userToggle.contains(e.target) && !userMenu.contains(e.target)) {
+                userMenu.classList.remove('active');
+            }
+            if (guestToggle && guestMenu && !guestToggle.contains(e.target) && !guestMenu.contains(e.target)) {
+                guestMenu.classList.remove('active');
+            }
+        });
+    });
+    const urlcart = `/qtyCart`;
+    axios.get(urlcart)
+        .then((response) => {
+            console.log(response.data);
+            const cartCount = document.getElementById('cart-item');
+            if (cartCount) {
+                cartCount.innerHTML = `🛒 Giỏ Hàng (${response.data.countItem ?? 0})`;
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching cart quantity:', error);
+        });
+
+</script>
+
+</body>
+</html>

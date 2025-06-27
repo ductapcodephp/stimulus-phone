@@ -1,0 +1,43 @@
+{% extends 'phone/layout.html.twig' %}
+
+{% block title %} Trang sản phẩm {% endblock %}
+
+{% block content %}
+    <link href="{{ asset('css/product.css') }}" rel="stylesheet">
+<section class="hero" id="home">
+    <div class="container">
+        <h1 class="fade-in">Điện Thoại Chính Hãng</h1>
+        <p class="fade-in">Khám phá bộ sưu tập điện thoại mới nhất với giá tốt nhất</p>
+        <a href="#products" class="cta-button fade-in">Mua Ngay</a>
+    </div>
+</section>
+
+<section class="products-section" id="products">
+    <div class="container">
+        <h2 class="section-title">Sản Phẩm Nổi Bật</h2>
+        <div class="products-grid">
+            {% for product in products %}
+            <div class="product-card fade-in">
+                <div class="product-image"><img src="{{ product.UrlImg }}"></div>
+                <div class="product-info">
+                    <h3 class="product-name">{{ product.name }}</h3>
+                    <div class="product-price">{{ product.price}}
+                        {% if product.priceSale>0 %} <span class="old-price">{{ product.priceSale }}</span>{% endif %}</div>
+                    <ul class="product-features">
+                        <li>• {{ product.color }}</li>
+                        <li>• {{ product.description }}</li>
+
+                    </ul>
+                    <div class="button-product">
+                        <a href="{{path('addToCart', {'id': product.id}) }}" class="button-a">Thêm vào giỏ</a>
+                        <a href="{{path('product_detail', {'id': product.id}) }}" class="button-a">Xem chi tiết</a>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

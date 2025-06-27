@@ -1,0 +1,240 @@
+
+.account-section {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.account-content {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 2rem;
+}
+
+.account-sidebar {
+    padding: 1.5rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+}
+
+.account-sidebar h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.account-sidebar ul {
+    list-style: none;
+}
+
+.account-sidebar ul li {
+    margin-bottom: 0.8rem;
+}
+
+.account-sidebar ul li a {
+    text-decoration: none;
+    color: #666;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+}
+
+.account-sidebar ul li a:hover,
+.account-sidebar ul li a.active {
+    color: #007bff;
+}
+
+.logout-button {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    display: block;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.logout-button:hover {
+    background: #c82333;
+    transform: translateY(-2px);
+}
+
+.account-main {
+    padding: 1.5rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+}
+
+.account-main h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.order-info {
+    margin-bottom: 2rem;
+}
+
+.order-info p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.order-status {
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    display: inline-block;
+}
+
+.order-status.delivered {
+    background: #28a745;
+    color: white;
+}
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+.order-table th,
+.order-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.order-table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #333;
+}
+
+.order-table td {
+    color: #666;
+}
+
+.order-total {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 1rem;
+    text-align: right;
+}
+
+.delivery-info,
+.payment-info {
+    margin: 2rem 0;
+}
+
+.delivery-info h4,
+.payment-info h4 {
+    font-size: 1.3rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.delivery-info p,
+.payment-info p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.action-buttons {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.cancel-button,
+.back-button {
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    text-align: center;
+    text-decoration: none;
+}
+
+.cancel-button {
+    background: #dc3545;
+    color: white;
+    border: none;
+}
+
+.cancel-button:hover {
+    background: #c82333;
+    transform: translateY(-2px);
+}
+
+.back-button {
+    background: #007bff;
+    color: white;
+    border: none;
+}
+
+.back-button:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .account-content {
+        grid-template-columns: 1fr;
+    }
+
+    .order-table {
+        font-size: 0.9rem;
+    }
+
+    .order-table th,
+    .order-table td {
+        padding: 0.6rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .cancel-button,
+    .back-button {
+        width: 100%;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeInUp 0.6s ease-out;
+}

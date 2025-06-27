@@ -1,0 +1,45 @@
+{% extends '/admin/admin_layout.hmtl.twig' %}
+
+{% block admin %}
+    <div class="container mx-auto p-6">
+        <h2 class="text-2xl font-bold mb-4 text-gray-800">Chi tiết đơn hàng #12345</h2>
+
+        <div class="bg-white rounded-lg shadow p-4 mb-6">
+            <h3 class="text-lg font-semibold mb-2 text-gray-700">Thông tin khách hàng</h3>
+            <p><strong>Khách hàng:</strong> {{consignee.name}}</p>
+            <p><strong>Email:</strong> {{ consignee.email }}</p>
+            <p><strong>Số điện thoại:</strong> {{ consignee.phone }}</p>
+            <p><strong>Địa chỉ:</strong>{{ consignee.address }}</p>
+            <p><strong>Ngày đặt:</strong> {{ consignee.CreatedAt|date("Y-m-d H:i:s") }}</p>
+            <p><strong>Trạng thái:</strong>
+                <span class="inline-block px-3 py-1 rounded-full bg-yellow-500 text-white text-sm">{{ consignee.status }}</span>
+            </p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4">
+            <h3 class="text-lg font-semibold mb-2 text-gray-700">Sản phẩm đã đặt</h3>
+            <table class="min-w-full border border-gray-300">
+                <thead class="bg-blue-600 text-white">
+                <tr>
+                    <th class="py-2 px-4 text-left">Tên sản phẩm</th>
+                    <th class="py-2 px-4 text-left">Hình ảnh </th>
+                    <th class="py-2 px-4 text-left">Số lượng</th>
+                    <th class="py-2 px-4 text-left">Giá</th>
+                </tr>
+                </thead>
+                <tbody>
+            {% for data in detailOrder %}
+                <tr class="border-b hover:bg-gray-100">
+                    <td class="py-2 px-4">{{ data.product.name }}</td>
+                    <td class="py-2 px-4"><img src="{{ data.product.UrlImg }}" alt="{{ data.product.name }}"></td>
+                    <td class="py-2 px-4">{{ data.quantity }}</td>
+                    <td class="py-2 px-4">{{data.product.price}}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="text-right mt-4">
+                <p class="text-lg font-bold">Tổng cộng: {{ total|number_format(0, '.', '.') }}đ</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

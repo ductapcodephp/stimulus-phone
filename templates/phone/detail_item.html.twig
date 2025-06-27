@@ -1,0 +1,93 @@
+{% extends 'phone/layout.html.twig' %}
+
+{% block title %}{{ product.name }} - Chi tiết sản phẩm{% endblock %}
+
+{% block content %}
+    <link href="{{ asset('css/detail_product.css') }}" rel="stylesheet">
+    <section class="product-details-section" id="product-details">
+        <div class="container">
+            <h2 class="section-title fade-in">Chi Tiết Sản Phẩm</h2>
+            <div class="product-main fade-in">
+                <div class="product-details">
+                    <div class="product-image-container">
+                        <div class="product-image">
+                            <img src="{{ asset(product.urlImg) }}" alt="{{ product.name }}" style="max-width: 100%; border-radius: 10px;">
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">{{ product.name }}</h3>
+                        <div class="product-price">
+                            {% if product.priceSale >0 %}
+                                <span class="new-price">{{ product.priceSale | number_format(0, ',', '.') }}đ</span>
+                                <span class="old-price">{{ product.price | number_format(0, ',', '.') }}đ</span>
+                            {% else %}
+                                <span class="new-price">{{ product.price | number_format(0, ',', '.') }}đ</span>
+                            {% endif %}
+
+                        </div>
+                        <p class="product-description">{{ product.description }}</p>
+                        <ul class="product-features">
+                            <li><strong>Chip:</strong> Snap Dragon 888</li>
+                            <li><strong>Màn hình:</strong> OLED</li>
+                            <li><strong>Camera:</strong> 120MP</li>
+                            <li><strong>Pin:</strong> 6000MA</li>
+                            <li><strong>Bộ nhớ:</strong> 256GB</li>
+                        </ul>
+                      <a href="{{ path('product_detail',{'id':product.id}) }}" class="buy-button">Thêm vào giỏ hàng </a>
+                    </div>
+                </div>
+
+                <div class="product-specs">
+                    <h4>Thông Số Kỹ Thuật</h4>
+                    <table class="specs-table">
+                        <tr>
+                            <td><strong>Kích thước:</strong></td>
+                            <td>50x50cm</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Trọng lượng:</strong></td>
+                            <td>400gr</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chất liệu:</strong></td>
+                            <td>Hợp kim nhôm </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Hệ điều hành:</strong></td>
+                            <td>Androi</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Kết nối:</strong></td>
+                            <td>bluetooth 4.0</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="comment-section">
+                    <h4>Bình Luận</h4>
+                    {% if app.user %}
+                        {{ form_start(commentForm) }}
+                        {{ form_row(commentForm.text, { 'attr': {'placeholder': 'Viết bình luận của bạn...'} }) }}
+                        {{ form_row(commentForm.rate) }}
+                        <button type="submit">Gửi Bình Luận</button>
+                        {{ form_end(commentForm) }}
+                    {% else %}
+                        <p>Bạn cần <a href="{{ path('app_login') }}">đăng nhập</a> để bình luận.</p>
+                    {% endif %}
+
+                    <ul class="comment-list">
+                        {% for comment in comments %}
+                            <li class="comment-item">
+                                <div class="comment-author">{{ comment.author.username }}</div>
+                                <div class="comment-date">{{ comment.createdAt|date('d/m/Y') }}</div>
+                                <div class="comment-content">{{ comment.text }}</div>
+                            </li>
+                        {% else %}
+                            <p>Chưa có bình luận nào.</p>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

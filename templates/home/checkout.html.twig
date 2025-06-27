@@ -1,0 +1,367 @@
+    {% extends 'home/layout.html.twig' %}
+
+    {% block title %}Checkout{% endblock %}
+
+    {% block body %}
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                overflow-x: hidden;
+            }
+            nav {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(20px);
+                padding: 1rem 2rem;
+                z-index: 1000;
+                transition: all 0.3s ease;
+            }
+
+            nav:hover {
+                background: rgba(255, 255, 255, 0.15);
+            }
+
+            .nav-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+                font-weight: bold;
+                color: white;
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            }
+
+            .nav-links {
+                display: flex;
+                list-style: none;
+                gap: 2rem;
+            }
+
+            .nav-links a {
+                color: white;
+                text-decoration: none;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                position: relative;
+            }
+
+            .nav-links a:hover {
+                transform: translateY(-2px);
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            }
+
+            .nav-links a::after {
+                content: '';
+                position: absolute;
+                bottom: -5px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+                transition: width 0.3s ease;
+            }
+
+            .nav-links a:hover::after {
+                width: 100%;
+            }
+
+            .checkout-section {
+                padding: 7rem 2rem 3rem;
+                max-width: 1200px;
+                margin: 0 auto;
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+            }
+
+            .checkout-container {
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(20px);
+                border-radius: 20px;
+                padding: 3rem;
+                width: 100%;
+                max-width: 800px;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                text-align: center;
+                transition: all 0.3s ease;
+                animation: bounce 2s ease-out;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+                color: white;
+                margin-bottom: 2rem;
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            }
+
+            .cart-summary {
+                margin-bottom: 2rem;
+            }
+
+            .cart-table {
+                width: 100%;
+                border-collapse: collapse;
+                color: white;
+                margin-bottom: 1rem;
+            }
+
+            .cart-table th, .cart-table td {
+                padding: 1rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                text-align: left;
+            }
+
+            .cart-table th {
+                font-weight: bold;
+            }
+
+            .checkout-form {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .form-group {
+                display: flex;
+                flex-direction: column;
+                text-align: left;
+            }
+
+            .form-group label {
+                color: white;
+                font-weight: bold;
+                margin-bottom: 0.5rem;
+                font-size: 1.1rem;
+            }
+
+            .form-input {
+                padding: 0.8rem;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 10px;
+                background: rgba(255, 255, 255, 0.05);
+                color: white;
+                font-size: 1rem;
+                transition: all 0.3s ease;
+            }
+
+            .form-input:focus {
+                outline: none;
+                border-color: #4ecdc4;
+                box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+            }
+
+            .form-input::placeholder {
+                color: rgba(255, 255, 255, 0.5);
+            }
+
+            .cta-button {
+                background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+                padding: 1rem;
+                border: none;
+                border-radius: 25px;
+                color: white;
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .cta-button:hover {
+                transform: scale(1.05);
+                box-shadow: 0 10px 20px rgba(78, 205, 196, 0.4);
+            }
+
+            .register-link {
+                margin-top: 1rem;
+                color: rgba(255, 255, 255, 0.8);
+                font-size: 0.9rem;
+            }
+
+            .register-link a {
+                color: #4ecdc4;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+            .register-link a:hover {
+                text-decoration: underline;
+            }
+
+            .flash-success {
+                background: rgba(39, 174, 96, 0.8);
+                color: white;
+                padding: 1rem;
+                margin-bottom: 1rem;
+                border-radius: 10px;
+            }
+
+            .flash-error {
+                background: rgba(231, 76, 60, 0.8);
+                color: white;
+                padding: 1rem;
+                margin-bottom: 1rem;
+                border-radius: 10px;
+            }
+
+            /* Footer */
+            footer {
+                background: rgba(0, 0, 0, 0.3);
+                color: white;
+                text-align: center;
+                padding: 2rem;
+                backdrop-filter: blur(10px);
+                margin-top: 2rem;
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .section-title {
+                    font-size: 2rem;
+                }
+
+                .nav-links {
+                    display: none;
+                }
+
+                .checkout-container {
+                    padding: 2rem;
+                }
+
+                .cart-table th, .cart-table td {
+                    padding: 0.5rem;
+                }
+            }
+
+            @keyframes bounce {
+                0%, 20%, 53%, 80%, 100% {
+                    transform: translate3d(0,0,0);
+                }
+                40%, 43% {
+                    transform: translate3d(0,-30px,0);
+                }
+                70% {
+                    transform: translate3d(0,-15px,0);
+                }
+                90% {
+                    transform: translate3d(0,-4px,0);
+                }
+            }
+            .required,
+            #order_form_created_at{
+                display: none;
+            }
+        </style>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                {{ component('Alert', {message: message,type: label}) }}
+            {% endfor %}
+        {% endfor %}
+        <section class="checkout-section">
+        <div class="checkout-container">
+            <h2 class="section-title">Thanh toán</h2>
+
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+
+            <div class="cart-summary">
+                <h3>Tóm tắt giỏ hàng</h3>
+                {% if cartItems is empty %}
+                    <p>Giỏ hàng của bạn đang trống.</p>
+                {% else %}
+                    <table class="cart-table">
+                        <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Tổng</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in cartItems %}
+                            <tr>
+                                <td>{{ item.product.name }}</td>
+                                <td>{{ item.product.price | number_format(0, ',', '.') }} VNĐ</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ (item.product.price * item.quantity) | number_format(0, ',', '.') }} VNĐ</td>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <td colspan="3" style="text-align: right;"><strong>Tổng cộng:</strong></td>
+                            <td>{{ total | number_format(0, ',', '.') }} VNĐ</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+
+            {{ form_start(form, {'attr': {'class': 'checkout-form'}}) }}
+            {{ form_errors(form) }}
+            <div class="form-group">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name, {'attr': {'class': 'form-input', 'placeholder': 'Họ và tên'}}) }}
+                {{ form_errors(form.name) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email, {'attr': {'class': 'form-input', 'placeholder': 'Email'}}) }}
+                {{ form_errors(form.email) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.phone) }}
+                {{ form_widget(form.phone, {'attr': {'class': 'form-input', 'placeholder': 'Số điện thoại'}}) }}
+                {{ form_errors(form.phone) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.address) }}
+                {{ form_widget(form.address, {'attr': {'class': 'form-input', 'placeholder': 'Địa chỉ'}}) }}
+                {{ form_errors(form.address) }}
+            </div>
+            <button type="submit" class="cta-button">Xác nhận thanh toán</button>
+            {{ form_end(form) }}
+
+            <p class="register-link">
+                Quay về <a href="{{ path('cart_list') }}">giỏ hàng</a>
+            </p>
+        </div>
+    </section>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(255, 255, 255, 0.2)';
+            } else {
+                nav.style.background = 'rgba(255, 255, 255, 0.1)';
+            }
+        });
+    </script>
+    {% endblock %}

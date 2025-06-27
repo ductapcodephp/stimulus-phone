@@ -1,0 +1,198 @@
+
+.account-section {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.account-content {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Sidebar Styling */
+.account-sidebar {
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+}
+
+.account-sidebar h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.account-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.account-sidebar ul li {
+    margin-bottom: 0.8rem;
+}
+
+.account-sidebar ul li a {
+    text-decoration: none;
+    color: #666;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.account-sidebar ul li a:hover,
+.account-sidebar ul li a.active {
+    color: #007bff;
+}
+
+/* Logout Button */
+.logout-button {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    display: block;
+    width: 100%;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.logout-button:hover {
+    background: #c82333;
+    transform: translateY(-2px);
+}
+
+/* Main Content Area */
+.account-main {
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+}
+
+.account-main h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+/* Order Table Styling */
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.order-table th,
+.order-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.order-table th {
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #333;
+}
+
+.order-table td {
+    color: #666;
+}
+
+/* Order Status Badges */
+.order-status {
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    display: inline-block;
+    text-transform: capitalize;
+}
+
+.order-status.delivered {
+    background: #28a745;
+    color: #fff;
+}
+
+.order-status.pending {
+    background: #ffc107;
+    color: #333;
+}
+
+.order-status.cancelled {
+    background: #dc3545;
+    color: #fff;
+}
+
+/* Details Button */
+.order-details-button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.order-details-button:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .account-content {
+        grid-template-columns: 1fr;
+    }
+
+    .order-table {
+        font-size: 0.9rem;
+    }
+
+    .order-table th,
+    .order-table td {
+        padding: 0.6rem;
+    }
+
+    .order-details-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeInUp 0.6s ease-out;
+}

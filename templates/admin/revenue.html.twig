@@ -1,0 +1,92 @@
+{% extends '/admin/admin_layout.hmtl.twig' %}
+
+{% block admin %}
+    <main class="flex-1 overflow-y-auto p-6 bg-white">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-800">Thống kê doanh thu</h2>
+        <div class="bg-gray-100 p-6 rounded shadow mb-8">
+            <canvas id="revenueChart" height="100"></canvas>
+        </div>
+            <h3 class="text-xl font-semibold text-gray-700">Sản phẩm đã bán</h3>
+        <form method="get" class="mb-4">
+            <label for="month" class="font-semibold text-gray-700 mr-2">Chọn tháng:</label>
+            <select name="month" id="month" onchange="this.form.submit()" class="border rounded px-2 py-1">
+                <option value="0" {{ selectedMonth == 0 ? 'selected' : '' }}>Tất cả</option>
+                {% for i in 1..12 %}
+                    <option value="{{ i }}" {{ selectedMonth == i ? 'selected' : '' }}>Tháng {{ i }}</option>
+                {% endfor %}
+            </select>
+        </form>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-200 rounded shadow">
+                <thead class="bg-gray-200 text-gray-700">
+                <tr>
+                    <th class="py-2 px-4 text-left">Hình ảnh</th>
+                    <th class="py-2 px-4 text-left">Tên sản phẩm</th>
+                    <th class="py-2 px-4 text-right">Giá</th>
+                    <th class="py-2 px-4 text-center">Tổng số lượng</th>
+                    <th class="py-2 px-4 text-right">Tổng tiền</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for stat in productStats %}
+                    {% set product = stat.product %}
+                    <tr class="border-t">
+                        <td class="py-2 px-4">
+                            <img src="{{ product.urlImg }}" alt="{{ product.name }}" class="w-16 h-16 object-cover rounded">
+                        </td>
+                        <td class="py-2 px-4">{{ product.name }}</td>
+                        <td class="py-2 px-4 text-right">{{ stat.price|number_format(0, ',', '.') }} ₫</td>
+                        <td class="py-2 px-4 text-center">{{ stat.quantity }}</td>
+                        <td class="py-2 px-4 text-right">{{ stat.total|number_format(0, ',', '.') }} ₫</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="text-right mt-4">
+                <span class="text-lg font-semibold text-gray-800">
+                    Tổng doanh thu tất cả sản phẩm:
+                    {{ total_revenue|number_format(0, ',', '.') }} ₫
+                </span>
+            </div>
+
+        </div>
+
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+
+        const revenueChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    label: 'Doanh thu (VNĐ)',
+                    data: {{ monthlyRevenue|json_encode|raw }},
+                    backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                    borderColor: 'rgba(37, 99, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString('vi-VN') + ' ₫';
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}

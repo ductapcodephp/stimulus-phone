@@ -1,0 +1,72 @@
+{% extends 'admin/admin_layout.hmtl.twig' %}
+
+{% block title %}Danh sách đơn hàng{% endblock %}
+
+{% block admin %}
+    <div class="flex-1 overflow-y-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Danh sách đơn hàng</h2>
+
+            <div class="mb-6 flex flex-col sm:flex-row gap-4">
+                <div class="flex-1">
+                    <form method="get" action="{{ path('admin_order') }}" class="flex gap-4">
+                        <div class="flex-1">
+                            <input type="text" name="search" placeholder="Tìm theo mã đơn hàng..." value="{{ app.request.query.get('search') }}"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                        </div>
+                        <div class="w-48">
+                            <select
+                                    name="status"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                                <option value="">Tất cả trạng thái</option>
+                                <option value="complete" {% if app.request.query.get('status') == 'complete' %}selected{% endif %}>Hoàn thành </option>
+                                <option value="failed" {% if app.request.query.get('status') == 'complete' %}selected{% endif %}>Thất bại </option>
+                            </select>
+                        </div>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Lọc</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                    <thead>
+                    <tr class="bg-blue-600 text-white">
+                        <th class="py-3 px-4 text-left">Mã đơn hàng</th>
+                        <th class="py-3 px-4 text-left">Khách hàng</th>
+                        <th class="py-3 px-4 text-left">Điện thoại</th>
+                        <th class="py-3 px-4 text-left">Email</th>
+                        <th class="py-3 px-4 text-left">Trạng thái</th>
+                        <th class="py-3 px-4 text-left">Địa chỉ</th>
+                        <th class="py-3 px-4 text-left">Hành động</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr class="border-b hover:bg-gray-100">
+                            <td class="py-3 px-4">{{ order.id }}</td>
+                            <td class="py-3 px-4">{{ order.name }}</td>
+                            <td class="py-3 px-4">{{ order.phone }}</td>
+                            <td class="py-3 px-4">{{ order.email }}</td>
+                            <td class="py-3 px-4">{{ order.status }}</td>
+                            <td class="py-3 px-4">{{ order.address }}</td>
+                            <td class="py-3 px-4">
+                                <a href="{{ path('admin_order_detail', {'id': order.id}) }}"
+                                   class="inline-block px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                                    Xem chi tiết
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="py-3 px-4 text-center text-gray-500">Không tìm thấy đơn hàng</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

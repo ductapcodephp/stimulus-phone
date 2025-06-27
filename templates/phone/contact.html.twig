@@ -1,0 +1,44 @@
+{% extends 'phone/layout.html.twig' %}
+
+{% block title %}Liên hệ {% endblock %}
+
+{% block content %}
+<link href="{{ asset('css/contact.css') }}" rel="stylesheet">
+<section class="contact-section" id="contact">
+    <div class="container">
+        <h2 class="section-title fade-in">Liên Hệ Với Chúng Tôi</h2>
+        <div class="contact-content">
+            <div class="contact-info fade-in">
+                <h3>Thông Tin Liên Hệ</h3>
+                <ul>
+                    <li>📞 Hotline: 1900 1234</li>
+                    <li>📧 Email: info@phonestore.vn</li>
+                    <li>📍 TP.HCM: 123 Nguyễn Huệ, Quận 1</li>
+                    <li>📍 Hà Nội: 456 Hoàn Kiếm</li>
+                </ul>
+            </div>
+            <div class="contact-form fade-in">
+                <h3>Gửi Tin Nhắn</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="name">Họ và Tên</label>
+                        <input type="text" id="name" name="name" placeholder="Nhập họ và tên" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Nhập email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Tin Nhắn</label>
+                        <textarea id="message" name="message" placeholder="Nhập tin nhắn của bạn" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Gửi</button>
+                </form>
+            </div>
+        </div>
+        <div class="map-section fade-in">
+            <div class="map-placeholder">🗺️ Bản đồ (Placeholder)</div>
+        </div>
+    </div>
+</section>
+{% endblock %}

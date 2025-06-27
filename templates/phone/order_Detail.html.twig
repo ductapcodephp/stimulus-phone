@@ -1,0 +1,61 @@
+{% extends 'phone/layout.html.twig' %}
+
+{% block title %}Chi tiết đơn{% endblock %}
+
+{% block content %}
+    <link href="{{ asset('css/detail_order.css') }}" rel="stylesheet">
+    <section class="account-section" id="order-details">
+        <div class="container">
+            <h2 class="section-title fade-in">Quản Lý Tài Khoản</h2>
+            <div class="account-content">
+                <div class="account-sidebar fade-in">
+                    <h3>Menu</h3>
+                    <ul>
+                        <li><a href="{{ path('app_profile') }}">Thông Tin Cá Nhân</a></li>
+                        <li><a href="{{ path('app_profile_order_history') }}" class="active">Lịch Sử Đơn Hàng</a></li>
+                        <li><a href="{{ path('app_logout') }}" class="logout-button">Đăng Xuất</a></li>
+                    </ul>
+                </div>
+                <div class="account-main fade-in">
+                    <h3>Chi Tiết Đơn Hàng #{{ order.id }}</h3>
+                    <div class="order-info">
+                        <p><strong>Ngày Đặt:</strong> {{ order.createdAt ? order.createdAt|date('d/m/Y') : 'Chưa có' }}</p>
+                        <p><strong>Trạng Thái:</strong> <span class="order-status {{ order.status == 'delivered' ? 'delivered' : '' }}">{{ order.status|default('Chưa cập nhật') }}</span></p>
+                    </div>
+                    <h4>Sản Phẩm</h4>
+                    <table class="order-table">
+                        <thead>
+                        <tr>
+                            <th>Sản Phẩm</th>
+                            <th>Số Lượng</th>
+                            <th>Giá</th>
+                            <th>Tổng</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for detail in detailOrders %}
+                            <tr>
+                                <td>{{ detail.product.name }}</td>
+                                <td>{{ detail.quantity }}</td>
+                                <td>{{ (detail.price)|number_format(0, '.', ',') }}đ</td>
+                                <td>{{ (detail.total ?? (detail.price * detail.quantity))|number_format(0, '.', ',') }}đ</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="order-total">Tổng Cộng: {{ total|number_format(0, '.', ',') }}đ</div>
+                    <div class="delivery-info">
+                        <h4>Thông Tin Giao Hàng</h4>
+                        <p><strong>Họ Tên:</strong> {{ order.name }}</p>
+                        <p><strong>Địa Chỉ:</strong> {{ order.address }}</p>
+                        <p><strong>Số Điện Thoại:</strong> {{ order.phone }}</p>
+                    </div>
+
+                    <div class="action-buttons">
+                        <a href="{{ path('app_profile_order_history') }}" class="back-button">Quay Lại</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,39 @@
+<div style="font-family: Arial, sans-serif; max-width: 700px; margin: auto; color: #333;">
+    <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">🛒 Thông tin đơn hàng của bạn</h2>
+
+    <p>Xin chào <strong>Lee Minh duc</strong>,</p>
+
+    <p>Cảm ơn bạn đã đặt hàng tại cửa hàng của chúng tôi! Dưới đây là chi tiết đơn hàng của bạn:</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; margin-bottom: 20px;">
+        <thead>
+        <tr style="background-color: #f2f2f2; text-align: left;">
+            <th style="border: 1px solid #ddd; padding: 10px;">Sản phẩm</th>
+            <th style="border: 1px solid #ddd; padding: 10px;">Hình ảnh </th>
+            <th style="border: 1px solid #ddd; padding: 10px;">Số lượng</th>
+            <th style="border: 1px solid #ddd; padding: 10px;">Đơn giá</th>
+            <th style="border: 1px solid #ddd; padding: 10px;">Thành tiền</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in detailOrder %}
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 10px;">{{ item.getProduct().getName() }}</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">{{ item.getQuantity() }}</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">{{ item.getPrice()|number_format(0, '.', ',') }} VND</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">
+                    {{ (item.getProduct().getPrice() * item.getQuantity())|number_format(0, '.', ',') }} VND
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <p style="font-size: 16px; font-weight: bold; text-align: right;">
+        Tổng cộng: {{ total|number_format(0, '.', ',') }} VND
+    </p>
+
+    <p>📞 Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất để xác nhận đơn hàng.</p>
+
+    <p style="margin-top: 30px;">Trân trọng,<br><strong>Đội ngũ Tech Phone</strong></p>
+</div>

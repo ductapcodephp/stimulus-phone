@@ -1,0 +1,48 @@
+{% extends 'phone/layout.html.twig' %}
+
+{% block title %}Về chúng tôi{% endblock %}
+
+{% block content %}
+<link href="{{ asset('css/about.css') }}" rel="stylesheet">
+<section class="about-section" id="about">
+    <div class="container">
+        <h2 class="section-title fade-in">Về PhoneStore</h2>
+        <div class="about-content">
+            <div class="about-text fade-in">
+                <p>PhoneStore tự hào là nhà cung cấp điện thoại chính hãng hàng đầu tại Việt Nam, mang đến cho khách hàng những sản phẩm công nghệ tiên tiến với giá cả cạnh tranh. Thành lập từ năm 2015, chúng tôi đã xây dựng được lòng tin từ hàng triệu khách hàng trên toàn quốc.</p>
+                <p>Với sứ mệnh "Kết nối công nghệ - Nâng tầm trải nghiệm", PhoneStore cam kết cung cấp sản phẩm chất lượng, dịch vụ tận tâm, và hỗ trợ khách hàng 24/7. Chúng tôi luôn nỗ lực để trở thành người bạn đồng hành đáng tin cậy của bạn trong thế giới công nghệ.</p>
+            </div>
+            <div class="about-image fade-in">📱</div>
+        </div>
+        <div class="mission-vision fade-in">
+            <h3>Sứ Mệnh</h3>
+            <p>Mang đến cho khách hàng những sản phẩm công nghệ hiện đại, đáng tin cậy, và trải nghiệm mua sắm tuyệt vời.</p>
+            <h3>Tầm Nhìn</h3>
+            <p>Trở thành nhà bán lẻ điện thoại hàng đầu khu vực, tiên phong trong việc ứng dụng công nghệ vào dịch vụ khách hàng.</p>
+        </div>
+    </div>
+</section>
+
+<section class="team-section">
+    <div class="container">
+        <h2 class="section-title fade-in">Đội Ngũ Của Chúng Tôi</h2>
+        <div class="team-grid">
+            <div class="team-card fade-in">
+                <div class="team-image">👤</div>
+                <h3 class="team-name">Nguyễn Văn An</h3>
+                <p class="team-role">Giám đốc điều hành</p>
+            </div>
+            <div class="team-card fade-in">
+                <div class="team-image">👤</div>
+                <h3 class="team-name">Trần Thị Bình</h3>
+                <p class="team-role">Quản lý kinh doanh</p>
+            </div>
+            <div class="team-card fade-in">
+                <div class="team-image">👤</div>
+                <h3 class="team-name">Lê Minh Châu</h3>
+                <p class="team-role">Chuyên viên kỹ thuật</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
