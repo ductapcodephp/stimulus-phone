@@ -20,16 +20,16 @@ class MailerService
     }
 
 
-    public function sendEmailMessage(string $content,$mailId,$mailUser): void
+    public function sendEmailMessage(string $content,$mailId,$orderId): void
     {
 
 
             $email = (new Email())
                 ->from(new Address('ducps34770@fpt.edu.vn', 'Tech Phone'))
-                ->to($mailUser)
+                ->to($orderId->getEmail())
                 ->subject('Xác nhận đơn hàng')
                 ->html($content);
-            $this->bus->dispatch(new CustomMailMessage($email,$mailId));
+            $this->bus->dispatch(new CustomMailMessage($email,$mailId,$orderId));
 
     }
 }

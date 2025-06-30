@@ -19,6 +19,7 @@ class OrderService
     {
         $user = $this->em->getRepository(User::class)->find($userId);
         $order->setUser($user);
+        $order->setCreatedAt(new \DateTime());
         $order->setStatus('failed');
 
         $total = 0;

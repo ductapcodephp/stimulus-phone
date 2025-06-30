@@ -41,6 +41,8 @@ class Product
     private int $inventory;
     #[ORM\Column(type: "integer")]
     private ?int $price_sale = null;
+    #[ORM\Column(type: "boolean")]
+    private ?bool $active = true;
     public function getId(): ?int
     {
         return $this->id;
@@ -144,6 +146,16 @@ class Product
     public function setComments(?Comment $comments): void
     {
         $this->comments = $comments;
+    }
+
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(?bool $active): void
+    {
+        $this->active = $active;
     }
 
 

@@ -46,9 +46,7 @@ class OrderForm extends AbstractType
                     new Assert\Type(['type' => 'string']),
                 ],
             ])
-            ->add('created_at', DateType::class, [
-                'data' => new \DateTime(),
-            ])
+
         ;
     }
 

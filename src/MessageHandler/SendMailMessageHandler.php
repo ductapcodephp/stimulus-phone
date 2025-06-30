@@ -3,6 +3,7 @@
 namespace App\MessageHandler;
 
 use App\Entity\Mail;
+use App\Entity\Order;
 use App\Message\CustomMailMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mailer\Messenger\SendEmailMessage;
@@ -26,11 +27,17 @@ class SendMailMessageHandler
     {
         $getMailId=$message->getMailId();
         $mail=$message->getMail();
+        $orderId=$message->getOrderId();
+        $findOrder=$this->em->getRepository(Order::class)->find($orderId);
         $findMail=$this->em->getRepository(Mail::class)->find($getMailId);
         $this->bus->dispatch(new SendEmailMessage($mail));
         if($findMail){
            $findMail->setStatus('complete');
            $this->em->flush();
+        }
+        if($findOrder){
+            $findOrder->setStatus('complete');
+            $this->em->flush();
         }
     }
 

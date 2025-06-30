@@ -6,24 +6,27 @@ use Symfony\Component\Mime\Email;
 
 class CustomMailMessage
 {
-     private Email $mail;
+     private int $orderId;
      private int $mailID;
-
-     public function __construct(Email $mail, int $mailID)
+    private Email $mail;
+     public function __construct(Email $mail,$orderId, int $mailID)
      {
-         $this->mail = $mail;
+         $this->orderId = $orderId;
          $this->mailID = $mailID;
+         $this->mail = $mail;
      }
 
      public function getMailID(): int
      {
          return $this->mailID;
      }
-     public function getMail(): Email
+
+     public function getOrderID(): int
      {
-         return $this->mail;
+         return $this->orderId;
      }
-
-
-
+    public function getMail(): Email
+    {
+        return $this->mail;
+    }       
 }

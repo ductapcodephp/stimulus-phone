@@ -16,7 +16,9 @@
                 {% endfor %}
             </select>
         </form>
-
+        <a href="{{ path('admin_revenue_pdf', { month: selectedMonth }) }}" class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4">
+            Xuất PDF
+        </a>
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white border border-gray-200 rounded shadow">
                 <thead class="bg-gray-200 text-gray-700">

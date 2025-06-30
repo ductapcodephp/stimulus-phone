@@ -1,84 +1,84 @@
-{% extends 'phone/layout.html.twig' %}
+    {% extends 'phone/layout.html.twig' %}
 
-{% block title %}Thông tin người dùng{% endblock %}
+    {% block title %}Thông tin người dùng{% endblock %}
 
-{% block content %}
-    <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
-    <section class="account-section" id="account">
-        <div class="container">
-            <h2 class="section-title fade-in">Quản Lý Tài Khoản</h2>
-            <div class="account-content">
-                <div class="account-sidebar fade-in">
-                    <h3>Menu</h3>
-                    <ul>
-                        <li><a href="{{path('app_profile')}}" class="active">Thông Tin Cá Nhân</a></li>
-                        <li><a href="{{ path('app_profile_order_history') }}">Lịch Sử Đơn Hàng</a></li>
-                        <li><a href="#change-password">Đổi Mật Khẩu</a></li>
-                        <li><a style="color: white" href="{{ path('app_logout') }}" class="logout-button">Đăng Xuất</a></li>
-                    </ul>
-                </div>
-                <div class="account-main fade-in">
-                    <div id="personal-info">
-                        <h3>Thông Tin Cá Nhân</h3>
-                        {{ form_start(personalForm) }}
-                        {{ form_errors(personalForm) }}
-                        <div class="form-group">
-                            {{ form_label(personalForm.username, 'Họ và Tên') }}
-                            {{ form_widget(personalForm.username, {'attr': {'class': 'form-input'}}) }}
-                            {{ form_errors(personalForm.username) }}
-                        </div>
-                        <div class="form-group">
-                            {{ form_label(personalForm.email, 'Email') }}
-                            {{ form_widget(personalForm.email, {'attr': {'class': 'form-input'}}) }}
-                            {{ form_errors(personalForm.email) }}
-                        </div>
-                        <div class="form-group">
-                            {{ form_label(personalForm.phone, 'Số Điện Thoại') }}
-                            {{ form_widget(personalForm.phone, {'attr': {'class': 'form-input'}}) }}
-                            {{ form_errors(personalForm.phone) }}
-                        </div>
-
-                        <button type="submit" class="save-button">Lưu Thay Đổi</button>
-                        {{ form_end(personalForm) }}
+    {% block content %}
+        <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
+        <section class="account-section" id="account">
+            <div class="container">
+                <h2 class="section-title fade-in">Quản Lý Tài Khoản</h2>
+                <div class="account-content">
+                    <div class="account-sidebar fade-in">
+                        <h3>Menu</h3>
+                        <ul>
+                            <li><a href="{{path('app_profile')}}" class="active">Thông Tin Cá Nhân</a></li>
+                            <li><a href="{{ path('app_profile_order_history') }}">Lịch Sử Đơn Hàng</a></li>
+                            <li><a href="#change-password">Đổi Mật Khẩu</a></li>
+                            <li><a style="color: white" href="{{ path('app_logout') }}" class="logout-button">Đăng Xuất</a></li>
+                        </ul>
                     </div>
-                        <div id="change-password">
-                            <h3>Đổi Mật Khẩu</h3>
-                            {{ form_start(passwordForm) }}
-                            {{ form_errors(passwordForm) }}
+                    <div class="account-main fade-in">
+                        <div id="personal-info">
+                            <h3>Thông Tin Cá Nhân</h3>
+                            {{ form_start(personalForm) }}
+                            {{ form_errors(personalForm) }}
                             <div class="form-group">
-                                {{ form_label(passwordForm.password, 'Mật Khẩu Hiện Tại') }}
-                                {{ form_widget(passwordForm.password, {'attr': {'class': 'form-input'}}) }}
-                                {{ form_errors(passwordForm.password) }}
+                                {{ form_label(personalForm.username, 'Họ và Tên') }}
+                                {{ form_widget(personalForm.username, {'attr': {'class': 'form-input'}}) }}
+                                {{ form_errors(personalForm.username) }}
                             </div>
                             <div class="form-group">
-                                {{ form_label(passwordForm.newPassword, 'Mật Khẩu Mới') }}
-                                {{ form_widget(passwordForm.newPassword, {'attr': {'class': 'form-input'}}) }}
-                                {{ form_errors(passwordForm.newPassword) }}
+                                {{ form_label(personalForm.email, 'Email') }}
+                                {{ form_widget(personalForm.email, {'attr': {'class': 'form-input'}}) }}
+                                {{ form_errors(personalForm.email) }}
                             </div>
                             <div class="form-group">
-                                {{ form_label(passwordForm.confirmPassword, 'Xác Nhận Mật Khẩu Mới') }}
-                                {{ form_widget(passwordForm.confirmPassword, {'attr': {'class': 'form-input'}}) }}
-                                {{ form_errors(passwordForm.confirmPassword) }}
+                                {{ form_label(personalForm.phone, 'Số Điện Thoại') }}
+                                {{ form_widget(personalForm.phone, {'attr': {'class': 'form-input'}}) }}
+                                {{ form_errors(personalForm.phone) }}
                             </div>
-                            <button type="submit" class="save-button">Lưu Mật Khẩu</button>
-                            {{ form_end(passwordForm) }}
+
+                            <button type="submit" class="save-button">Lưu Thay Đổi</button>
+                            {{ form_end(personalForm) }}
                         </div>
-                    <div id="order-history">
-                        <h3>Lịch Sử Đơn Hàng</h3>
-                        {% if recentOrders|length > 0 %}
-                            <ul>
-                                {% for order in recentOrders %}
-                                    <li>
-                                        <strong>Đơn hàng #{{ order.id }} - Số điện thoại {{ order.phone }} - <a href="{{ path('detail_order_user', {'id': order.id}) }}">Xem chi tiết</a></strong>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <p>Bạn chưa có đơn hàng nào.</p>
-                        {% endif %}
+                            <div id="change-password">
+                                <h3>Đổi Mật Khẩu</h3>
+                                {{ form_start(passwordForm) }}
+                                {{ form_errors(passwordForm) }}
+                                <div class="form-group">
+                                    {{ form_label(passwordForm.password, 'Mật Khẩu Hiện Tại') }}
+                                    {{ form_widget(passwordForm.password, {'attr': {'class': 'form-input'}}) }}
+                                    {{ form_errors(passwordForm.password) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(passwordForm.newPassword, 'Mật Khẩu Mới') }}
+                                    {{ form_widget(passwordForm.newPassword, {'attr': {'class': 'form-input'}}) }}
+                                    {{ form_errors(passwordForm.newPassword) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(passwordForm.confirmPassword, 'Xác Nhận Mật Khẩu Mới') }}
+                                    {{ form_widget(passwordForm.confirmPassword, {'attr': {'class': 'form-input'}}) }}
+                                    {{ form_errors(passwordForm.confirmPassword) }}
+                                </div>
+                                <button type="submit" class="save-button">Lưu Mật Khẩu</button>
+                                {{ form_end(passwordForm) }}
+                            </div>
+                        <div id="order-history">
+                            <h3>Lịch Sử Đơn Hàng</h3>
+                            {% if recentOrders|length > 0 %}
+                                <ul>
+                                    {% for order in recentOrders %}
+                                        <li>
+                                            <strong>Đơn hàng #{{ order.id }} - Số điện thoại {{ order.phone }} - <a href="{{ path('detail_order_user', {'id': order.id}) }}">Xem chi tiết</a></strong>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p>Bạn chưa có đơn hàng nào.</p>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-{% endblock %}
+        </section>
+    {% endblock %}

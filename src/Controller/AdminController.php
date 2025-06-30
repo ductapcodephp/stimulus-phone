@@ -8,7 +8,9 @@ use App\Form\AddProductForm;
 use App\Form\EditProductForm;
 use App\Repository\DetailOrderRepository;
 use App\Repository\OrderRepository;
+use App\Services\AdminService;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +19,13 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class AdminController extends AbstractController
 {
+
+    public function __construct(
+        private readonly AdminService $adminService
+    ) {
+
+    }
+
     #[Route('/admin', name: 'app_admin', methods: ['GET'])]
     public function index(Request $request, EntityManagerInterface $en): Response
     {
@@ -150,47 +159,41 @@ final class AdminController extends AbstractController
         ]);
     }
     #[Route('/admin/revenue', name: 'admin_revenue')]
-    public function revenue(Request $request, DetailOrderRepository $detailOrderRepository): Response
+    public function revenue(Request $request, DetailOrderRepository $repo): Response
     {
         $selectedMonth = $request->query->getInt('month', 0);
-        $orders = $detailOrderRepository->findAll();
-        $monthlyRevenue = array_fill(1, 12, 0);
-        $filteredOrders = [];
-
-        foreach ($orders as $order) {
-            $month = (int)$order->getCreatedAt()->format('n');
-            $monthlyRevenue[$month] += $order->getTotal();
-            if ($selectedMonth === 0 || $month === $selectedMonth) {
-                $filteredOrders[] = $order;
-            }
-        }
-        $productStats = [];
-        $total_revenue = 0;
-
-        foreach ($filteredOrders as $order) {
-            $product = $order->getProduct();
-            $productId = $product->getId();
-
-            if (!isset($productStats[$productId])) {
-                $productStats[$productId] = [
-                    'product' => $product,
-                    'quantity' => 0,
-                    'total' => 0,
-                    'price' => $order->getPrice(),
-                ];
-            }
-
-            $productStats[$productId]['quantity'] += $order->getQuantity();
-            $productStats[$productId]['total'] += $order->getTotal();
-            $total_revenue += $order->getTotal();
-        }
+        [$productStats, $monthlyRevenue, $totalRevenue, $filteredOrders] =
+            $this->adminService->calculate($selectedMonth, $repo);
 
         return $this->render('admin/revenue.html.twig', [
             'orders' => $filteredOrders,
             'monthlyRevenue' => $monthlyRevenue,
             'productStats' => $productStats,
-            'total_revenue' => $total_revenue,
+            'total_revenue' => $totalRevenue,
             'selectedMonth' => $selectedMonth,
+        ]);
+    }
+    #[Route('/pdf', name: 'admin_revenue_pdf')]
+    public function exportPdf(Request $request, DetailOrderRepository $repo): Response
+    {
+        $selectedMonth = $request->query->getInt('month', 0);
+        [$productStats, , $totalRevenue] =
+            $this->adminService->calculate($selectedMonth, $repo);
+
+        $html = $this->renderView('admin/revenue_pdf.html.twig', [
+            'productStats' => $productStats,
+            'total_revenue' => $totalRevenue,
+            'selectedMonth' => $selectedMonth,
+        ]);
+
+        $dompdf = new Dompdf(['defaultFont' => 'DejaVu Sans']);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return new Response($dompdf->output(), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="revenue-report.pdf"',
         ]);
     }
     #[Route('/admin/users', name: 'admin_user_list')]

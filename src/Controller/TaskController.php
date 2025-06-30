@@ -11,6 +11,7 @@ use App\Entity\User;
 use App\Form\CommentForm;
 use App\Form\OrderForm;
 use App\Form\RegisterTypeForm;
+use App\Message\PaymentCompletedMessage;
 use App\Services\CartService;
 use App\Services\MailerService;
 use App\Services\OrderService;
@@ -246,7 +247,7 @@ final class TaskController extends AbstractController
     }
 
     #[Route('/payment/vnpay/return', name: 'vnpay_return')]
-    public function vnpayReturn(Request $request, EntityManagerInterface $em): Response
+    public function vnpayReturn(Request $request, EntityManagerInterface $em,MessageBusInterface $bus): Response
     {
         $inputData = $request->query->all();
         $vnp_SecureHash = $inputData['vnp_SecureHash'] ?? null;
@@ -268,43 +269,10 @@ final class TaskController extends AbstractController
             if ($order->getStatus() !== 'paid') {
                 $order->setStatus('paid');
                 $em->flush();
+                $user = $this->security->getUser();
+                $bus->dispatch(new PaymentCompletedMessage($order->getId(), $user->getId()));
 
-                $user=$this->security->getUser();
-                $mail_user=$order->getEmail();
-                $cartData=$this->cartService->getCartData($user->getId());
-                $cartItems = $cartData['cartItems'];
-                $detailOrder=$em->getRepository(DetailOrder::class)->findOneBy(['order'=>$orderId]);
-                $totalOder=$detailOrder->getTotal();
-                $total = 0;
-                $total+=$totalOder;
-                    $emailContent = $this->renderView('email/order_summary.html.twig', [
-                        'user' => $user,
-                        'detailOrder' => $detailOrder,
-                        'total' => $total,
-                    ]);
-                    $mail = new Mail();
-                    $mail->setStatus('sent');
-                    $mail->setJsonData([
-                        'subject' => 'Order Confirmation',
-                        'recipient' => $mail_user,
-                        'body' => $emailContent,
-                        'file' => null,
-                    ]);
-                    $em->persist($mail);
-                    $em->flush();
-                    $mailId=$mail->getId();
-//                    $this->mailerService->sendEmailMessage($emailContent, $mailId,$mail_user);
-
-                foreach ($cartItems as $item) {
-                    $em->remove($item);
-                    $findProduct = $em->getRepository(Product::class)->find($item->getProduct());
-                    if ($findProduct) {
-                        $newInventory = $findProduct->getInventory() - $item->getQuantity();
-                        $findProduct->setInventory(max(0, $newInventory));
-                    }
-                }
-                $em->flush();
-                $this->addFlash('success', 'Thanh toán thành công!');
+                $this->addFlash('success', 'Thanh toán thành công! Đơn hàng đang được xử lý.');
                 return $this->redirectToRoute('app_task_index');
             }
         }
@@ -312,7 +280,6 @@ final class TaskController extends AbstractController
         $this->addFlash('error', 'Thanh toán thất bại hoặc bị hủy.');
         return $this->redirectToRoute('cart_list');
     }
-
     #[Route('qtyCart', name: 'qtyCart')]
     public function qtyCart(): Response
     {

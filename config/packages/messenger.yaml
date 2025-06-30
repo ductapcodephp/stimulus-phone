@@ -32,3 +32,5 @@ framework:
             App\Event\FailSendMail: async
             App\Message\CustomMailMessage: async
             App\MessageHandler\SendMailMessageHandler: async
+            'App\Message\PaymentCompletedMessage': async
+            'App\MessageHandler\PaymentCompletedMessageHandler': async
