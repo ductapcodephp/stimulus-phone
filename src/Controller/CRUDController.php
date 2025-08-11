@@ -28,23 +28,35 @@ class CRUDController extends AbstractController
 
     }
 
-    #[Route('/addToCart/{id}', name: 'addToCart')]
-    public function addToCart(int $id, CartService $cartService,ProductRepository $pr): Response
-    {
+
+    #[Route('/addToCart/{id}', name: 'addToCart', methods: ['GET'])]
+    public function addToCart(
+        int $id,
+        Request $request,
+        CartService $cartService,
+        ProductRepository $productRepository
+    ): JsonResponse {
         $user = $this->getUser();
         if (!$user) {
-            return $this->redirectToRoute('app_login');
+            return new JsonResponse(['message' => 'Bạn cần đăng nhập'], 401);
         }
 
-        $product = $pr->find($id);
+        $product = $productRepository->find($id);
         if (!$product) {
-            $this->addFlash('error', 'Product not found.');
-            return $this->redirectToRoute('app_task_index');
+            return new JsonResponse(['message' => 'Sản phẩm không tồn tại'], 404);
         }
-        $success = $cartService->addProductToCart($product, $user);
 
-        return $this->redirectToRoute($success ? 'app_task_index' : 'cart');
+        $data = json_decode($request->getContent(), true);
+        $quantity = isset($data['quantity']) ? (int) $data['quantity'] : 1;
+        if ($quantity < 1) {
+            return new JsonResponse(['message' => 'Số lượng không hợp lệ'], 400);
+        }
+
+        $cartService->addProductToCart($product, $user, $quantity);
+
+        return new JsonResponse(['message' => 'Đã thêm sản phẩm vào giỏ', 'quantity' => $quantity]);
     }
+
 
 
     #[Route('/remove_cart/{id}', name: 'remove_cart')]

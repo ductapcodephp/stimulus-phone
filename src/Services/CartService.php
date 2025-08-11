@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Entity\Cart;
 use App\Entity\CartItem;
 use App\Entity\Product;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -46,12 +47,8 @@ final class CartService
             'countItem' => $countItem,
         ];
     }
-    public function addProductToCart(Product $product,$user): bool
+    public function addProductToCart(Product $product, User $user, int $quantity = 1): void
     {
-        if (!$product) {
-            return false;
-        }
-
         $cart = $this->en->getRepository(Cart::class)->findOneBy(['user' => $user]);
 
         if (!$cart) {
@@ -66,18 +63,16 @@ final class CartService
         ]);
 
         if ($cartItem) {
-            $cartItem->setQuantity($cartItem->getQuantity() + 1);
+            $cartItem->setQuantity($cartItem->getQuantity() + $quantity);
         } else {
             $cartItem = new CartItem();
             $cartItem->setCart($cart);
             $cartItem->setProduct($product);
-            $cartItem->setQuantity(1);
+            $cartItem->setQuantity($quantity);
             $this->en->persist($cartItem);
         }
 
         $this->en->flush();
-
-        return true;
     }
 
 }

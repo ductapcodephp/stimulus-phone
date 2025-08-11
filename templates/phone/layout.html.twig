@@ -48,8 +48,9 @@
 {% block content %}
 
 {% endblock %}
-
-
+{% block stimulus %}
+    {{ importmap('app') }}
+{% endblock %}
 <footer>
     <div class="container">
         <div class="footer-content">

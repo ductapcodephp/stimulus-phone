@@ -157,9 +157,10 @@
       <path value="$PROJECT_DIR$/vendor/dompdf/php-svg-lib" />
       <path value="$PROJECT_DIR$/vendor/dompdf/php-font-lib" />
       <path value="$PROJECT_DIR$/vendor/fakerphp/faker" />
+      <path value="$PROJECT_DIR$/vendor/sebastian/resource-operations" />
     </include_path>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="8.3">
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.1">
     <option name="suggestChangeDefaultLanguageLevel" value="false" />
   </component>
   <component name="PhpStan">
