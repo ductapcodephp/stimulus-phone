@@ -280,14 +280,15 @@ final class TaskController extends AbstractController
         $this->addFlash('error', 'Thanh toán thất bại hoặc bị hủy.');
         return $this->redirectToRoute('cart_list');
     }
-    #[Route('qtyCart', name: 'qtyCart')]
+    #[Route('/qtyCart', name: 'qtyCart')]
     public function qtyCart(): Response
     {
-        $user=$this->security->getUser();
-        $cartData=$this->cartService->getCartData($user->getId());
+        $user = $this->security->getUser();
+        $cartData = $this->cartService->getCartData($user->getId());
         $cartItems = $cartData['countItem'];
-        return new JsonResponse(['countItem' => $cartItems]);
 
+        return new JsonResponse(['countItem' => $cartItems]);
     }
+
 
 }

@@ -1,7 +1,8 @@
-import { Controller } from '@hotwired/stimulus';
+import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-    static targets = ['form', 'quantity'];
+    static targets = ["form", "quantity"];
+
     connect() {
         this.productId = this.data.get('productId');
         this.apiUrl = `/addToCart/${this.productId}`;
@@ -9,7 +10,7 @@ export default class extends Controller {
 
     showForm(event) {
         event.preventDefault();
-        this.formTarget.style.display = (this.formTarget.style.display === 'block') ? 'none' : 'block';
+        this.formTarget.style.display = this.formTarget.style.display === "block" ? "none" : "block";
     }
 
     async submitForm(event) {
@@ -19,28 +20,31 @@ export default class extends Controller {
 
         try {
             const response = await fetch(this.apiUrl, {
-                method: 'POST',
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
+                    "Content-Type": "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
                 },
-                body: JSON.stringify({ quantity: parseInt(quantity, 10) })
+                body: JSON.stringify({ quantity: parseInt(quantity, 10) }),
             });
 
             if (!response.ok) {
                 const error = await response.json();
-                alert(error.message || 'Có lỗi xảy ra');
+                alert(error.message || "Có lỗi xảy ra");
                 return;
             }
 
             const data = await response.json();
-            alert(data.message);
 
-            this.formTarget.style.display = 'none';
+            this.formTarget.style.display = "none";
+
+
+            window.dispatchEvent(new Event("cart:updated"));
 
         } catch (error) {
-            alert('Không thể kết nối tới server');
+            alert("Không thể kết nối tới server");
             console.error(error);
         }
     }
+
 }

@@ -34,16 +34,22 @@
                                 <div class="cart-item-image">
                                     <img src="{{ cartItem.product.urlImg|default('https://via.placeholder.com/100') }}" alt="{{ cartItem.product.name|default('Sản phẩm') }}" width="100" height="100">
                                 </div>
-                                <div class="cart-item-details">
-                                    <h3 class="cart-item-title">{{ cartItem.product.name|default('Sản phẩm') }}</h3>
-                                    <div class="cart-item-price">{{ cartItem.product.price|number_format(0, ',', '.')|default('0') }}₫</div>
+                                <div data-controller="cart">
                                     <div class="cart-item-quantity">
-                                        <button class="quantity-btn" data-id="{{ cartItem.id }}" data-action="decrease">-</button>
+                                        <button class="quantity-btn"
+                                                data-id="{{ cartItem.id }}"
+                                                data-url="{{ path('cart_decrease', { id: cartItem.id }) }}"
+                                                data-action="click->cart#decrease">-</button>
+
                                         <span id="qty-{{ cartItem.id }}">{{ cartItem.quantity|default(1) }}</span>
-                                        <button class="quantity-btn" data-id="{{ cartItem.id }}" data-action="increase">+</button>
+
+                                        <button class="quantity-btn"
+                                                data-id="{{ cartItem.id }}"
+                                                data-url="{{ path('cart_increase', { id: cartItem.id }) }}"
+                                                data-action="click->cart#increase">+</button>
                                     </div>
                                 </div>
-                                <button class="cart-item-remove" onclick="location.href='{{ path('remove_cart', {'id': cartItem.id}) }}'">Xóa</button>
+                                <a class="cart-item-remove" href="">Xóa</a>
                             </div>
                         {% endfor %}
                     </div>
@@ -112,39 +118,4 @@
         </div>
     </section>
 
-
-    <script>
-        document.querySelectorAll('.quantity-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                const action = this.getAttribute('data-action');
-                const url = `/cart/${action}/${id}`;
-
-                axios.post(url)
-                    .then(response => {
-                        document.getElementById(`qty-${id}`).innerText = response.data.quantity;
-                        if (response.data.total !== undefined) {
-                            document.getElementById('subtotal').innerText = response.data.total.toLocaleString('vi-VN') + '₫';
-                            document.getElementById('total').innerText = (response.data.total + 30000).toLocaleString('vi-VN') + '₫';
-                            document.getElementById('cart-count').innerText = response.data.countItem + ' sản phẩm';
-                            const cartCount = document.getElementById('cart-item');
-                            if (cartCount) {
-                                cartCount.innerHTML = `🛒 Giỏ Hàng (${response.data.countItem ?? 0})`;
-                            }
-                        }
-
-                        if (response.data.cartCount === 0) {
-                            document.getElementById('cart-content').style.display = 'none';
-                            document.getElementById('empty-cart').style.display = 'block';
-                            document.getElementById('clear-btn').style.display = 'none';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error updating cart:', error);
-                    });
-            });
-        });
-
-
-    </script>
 {% endblock %}

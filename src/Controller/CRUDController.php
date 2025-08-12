@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -29,13 +30,8 @@ class CRUDController extends AbstractController
     }
 
 
-    #[Route('/addToCart/{id}', name: 'addToCart', methods: ['GET'])]
-    public function addToCart(
-        int $id,
-        Request $request,
-        CartService $cartService,
-        ProductRepository $productRepository
-    ): JsonResponse {
+    #[Route('/addToCart/{id}', name: 'addToCart', methods: ['POST'])]
+    public function addToCart(int $id,Request $request, CartService $cartService, ProductRepository $productRepository): JsonResponse {
         $user = $this->getUser();
         if (!$user) {
             return new JsonResponse(['message' => 'Bạn cần đăng nhập'], 401);
@@ -84,12 +80,15 @@ class CRUDController extends AbstractController
         $cartItem->setQuantity($qty);
         $cartItem->setTotal($cartItem->getProduct()->getPrice() * $qty);
         $em->flush();
+
         $user = $this->getUser();
-        $userId=$user->getId();
-        $cartData= $this->cartService->getCartData($userId);
-        $total=$cartData['total'];
-        $countItem=$cartData['countItem'];
-        return new JsonResponse(['quantity' => $cartItem->getQuantity(), 'total' => $total,'countItem' => $countItem]);
+        $cartData = $this->cartService->getCartData($user->getId());
+        $total = $cartData['total'];
+
+        return new JsonResponse([
+            'quantity' => $qty,
+            'total' => $total
+        ]);
     }
 
     #[Route('/cart/decrease/{id}', name: 'cart_decrease', methods: ['POST'])]
@@ -99,13 +98,17 @@ class CRUDController extends AbstractController
         $cartItem->setQuantity($qty);
         $cartItem->setTotal($cartItem->getProduct()->getPrice() * $qty);
         $em->flush();
+
         $user = $this->getUser();
-        $userId=$user->getId();
-        $cartData= $this->cartService->getCartData($userId);
-        $total=$cartData['total'];
-        $countItem=$cartData['countItem'];
-        return new JsonResponse(['quantity' => $qty , 'total' => $total,'countItem' => $countItem]);
+        $cartData = $this->cartService->getCartData($user->getId());
+        $total = $cartData['total'];
+
+        return new JsonResponse([
+            'quantity' => $qty,
+            'total' => $total
+        ]);
     }
+
 
 }
 

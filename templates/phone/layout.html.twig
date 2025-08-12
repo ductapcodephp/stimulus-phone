@@ -33,7 +33,9 @@
                 </div>
                 {% endif %}
             </div>
-            <a href="{{ path('cart_list') }}" class="cart-icon" id="cart-item"></a>
+            <a href="{{ path('cart_list') }}" class="cart-icon" data-controller="cart">
+                🛒 Giỏ Hàng <span data-cart-target="count">0</span>
+            </a>
 
         </nav>
     </div>
@@ -69,7 +71,7 @@
                     <li><a href="#">Hướng dẫn mua hàng</a></li>
                     <li><a href="#">Chính sách bảo hành</a></li>
                     <li><a href="#">Chính sách đổi trả</a></li>
-                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">FAật kiểu gì ta? Cắm áo khoác? Hay dùng... mô hình carton ngồi thay :))))Q</a></li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -125,18 +127,6 @@
             }
         });
     });
-    const urlcart = `/qtyCart`;
-    axios.get(urlcart)
-        .then((response) => {
-            console.log(response.data);
-            const cartCount = document.getElementById('cart-item');
-            if (cartCount) {
-                cartCount.innerHTML = `🛒 Giỏ Hàng (${response.data.countItem ?? 0})`;
-            }
-        })
-        .catch((error) => {
-            console.error('Error fetching cart quantity:', error);
-        });
 
 </script>
 
