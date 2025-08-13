@@ -5,7 +5,6 @@ export default class extends Controller {
 
     connect() {
         this.updateCartCount();
-        window.addEventListener("cart:updated", () => this.updateCartCount());
     }
 
     updateCartCount() {
@@ -47,15 +46,12 @@ export default class extends Controller {
 
             const qtyEl = document.getElementById(`qty-${id}`);
             if (qtyEl) qtyEl.textContent = data.quantity;
-
-            const totalEl = document.getElementById("cart-total");
-            if (totalEl) totalEl.textContent =
-                new Intl.NumberFormat('vi-VN').format(data.total);
-
-            window.dispatchEvent(new Event("cart:updated"));
-
+            if (this.hasCountTarget) {
+                this.countTarget.textContent = data.countItem;
+            }
         } catch (error) {
             console.error("Error updating cart:", error);
         }
     }
+
 }

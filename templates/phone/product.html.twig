@@ -28,13 +28,14 @@
                         <li>• {{ product.description }}</li>
 
                     </ul>
-                    <div data-controller="add-to-cart" data-add-to-cart-product-id="{{ product.id }}" class="button-product">
+                    <div data-controller="add-to-cart" data-add-to-cart-cart-outlet=".cart-icon" data-add-to-cart-product-id="{{ product.id }}" class="button-product">
                         <form data-add-to-cart-target="form"
                                 data-action="submit->add-to-cart#submitForm" style="display: none;">
                             <input type="number"
                                    name="quantity"
                                    value="1" min="1"
                                    data-add-to-cart-target="quantity"
+
                                    style="width: 60px; text-align: center;">
                             <button type="submit" class="button-a">Xác nhận</button>
                         </form>

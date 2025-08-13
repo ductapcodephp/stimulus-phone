@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
     static targets = ["form", "quantity"];
-
+    static outlets = ["cart"];
     connect() {
         this.productId = this.data.get('productId');
         this.apiUrl = `/addToCart/${this.productId}`;
@@ -37,9 +37,10 @@ export default class extends Controller {
             const data = await response.json();
 
             this.formTarget.style.display = "none";
+            if (this.hasCartOutlet) {
+                this.cartOutlet.updateCartCount();
+            }
 
-
-            window.dispatchEvent(new Event("cart:updated"));
 
         } catch (error) {
             alert("Không thể kết nối tới server");

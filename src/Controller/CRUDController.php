@@ -108,7 +108,17 @@ class CRUDController extends AbstractController
             'total' => $total
         ]);
     }
-
-
+    #[Route('/result', name: 'result')]
+    public function result(): Response
+    {
+        $data = 4;
+        return $this->json(['data' => $data]);
+    }
+    #[Route('/test', name: 'test')]
+    public function test(): Response
+    {
+        $data=4;
+        return $this->render('test.html.twig',compact('data'));
+    }
 }
 

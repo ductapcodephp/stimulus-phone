@@ -7,7 +7,7 @@
     <section class="breadcrumb">
         <div class="container">
             <ul class="breadcrumb-list">
-                <li><a href="#" onclick="goHome()">Trang chủ</a></li>
+                <li><a href="#" >Trang chủ</a></li>
                 <li>›</li>
                 <li>Giỏ hàng</li>
             </ul>
@@ -30,7 +30,7 @@
                 <div class="cart-content" id="cart-content">
                     <div class="cart-items fade-in" id="cart-items">
                         {% for cartItem in cartItems %}
-                            <div class="cart-item">
+                            <div class="cart-it`em">
                                 <div class="cart-item-image">
                                     <img src="{{ cartItem.product.urlImg|default('https://via.placeholder.com/100') }}" alt="{{ cartItem.product.name|default('Sản phẩm') }}" width="100" height="100">
                                 </div>
@@ -82,7 +82,7 @@
                         <button class="checkout-btn" id="checkout-btn">
                             <span id="checkout-text"><a href="{{ path('checkout') }}" style="color: inherit; text-decoration: none;">Tiến Hành Thanh Toán</a></span>
                         </button>
-                        <a href="#" class="continue-shopping" onclick="goHome()">← Tiếp tục mua sắm</a>
+                        <a href="#" class="continue-shopping" >← Tiếp tục mua sắm</a>
                     </div>
                 </div>
             {% else %}
@@ -90,7 +90,7 @@
                     <div class="empty-cart-icon">🛒</div>
                     <h2>Giỏ hàng của bạn đang trống</h2>
                     <p>Hãy khám phá các sản phẩm tuyệt vời của chúng tôi!</p>
-                    <a href="#" class="checkout-btn" onclick="goHome()" style="max-width: 300px; margin: 0 auto;">
+                    <a href="#" class="checkout-btn"  style="max-width: 300px; margin: 0 auto;">
                         Bắt đầu mua sắm
                     </a>
                     <div class="recommended">

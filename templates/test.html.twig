@@ -1,0 +1,21 @@
+{% extends 'phone/layout.html.twig' %}
+{% block content %}
+    <style>
+        .search--busy {
+            background-image: url({{ asset('/img/xioumi.webp') }});
+            background-repeat: no-repeat;
+            background-position: right center;
+            background-size: 200px;
+            min-height: 120px;
+            padding: 16px;
+            border: 1px solid #ddd;
+            display: block;
+        }
+    </style>
+
+    <form data-controller="hello"
+          data-hello-loading-class="search--busy">
+        <input type="text" placeholder="Tìm kiếm..."
+               data-action="hello#loadResults">
+    </form>
+{% endblock %}
